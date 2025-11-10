@@ -30,7 +30,7 @@ body{
 .logo{
     height: auto;
     width: auto;
-    background-color: rgb(197, 195, 195);
+    background-color: azure;
 }
 
 .pages{
@@ -62,6 +62,7 @@ body{
 }
 
 .image{
+    border-radius: 120px;
     height: 100%;
     width: 100%;
 }
@@ -124,6 +125,7 @@ body{
     width: 60%;
 }
 .mertbirresim{
+  border-radius: 100px;
     transition: transform 1s linear;
     height: 70%;
     width: auto;
