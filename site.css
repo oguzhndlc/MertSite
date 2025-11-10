@@ -3,31 +3,35 @@ body{
 }
 
 .header{
+    border-radius: 100px;
     width: 100vw; 
     height: 80px; 
-    background-color: aqua; 
+    background-color: azure; 
     align-content: center;
     display: flex;
 }
 
 .mert{
     border-radius: 5px;
-    width: 20%; 
-    height: 100%; 
+    width: auto; 
+    height: 5rem; 
     display: flex; 
     justify-content:center;
     align-items:center;
-    background-color: green; 
+    color: green;
 }
 
 #yazi{
-    color: azure;
-    font-size: 150%;
+    color: green;
+    font-size: 200%;
+    font-weight: bold;
+    font-style: italic;
     font-family: monospace;
     white-space: pre
 }
 
 .logo{
+    border-radius: 100px;
     height: auto;
     width: auto;
     background-color: azure;
@@ -43,11 +47,12 @@ body{
 }
 
 .hdbtn{
+    background-color: azure;
     display:flex; 
-    justify-content:center;
+    justify-content:right;
     align-items:center;
     height: 100%;
-    width: 200px;
+    width: 250px;
 
 }
 
@@ -118,14 +123,29 @@ body{
     width: 20%;
 }
 .bds{
-    display:flex; 
-    justify-content:center;
-    align-items:center;
+    
     height: 30rem;
     width: 60%;
 }
+
+.bdsimg{
+    height: 25rem; 
+    width: auto;
+    display:flex; 
+    justify-content:center;
+    align-items:center;
+}
+
+.bdstxt{
+    height: 5rem; 
+    width: auto;
+    display:flex; 
+    justify-content:center;
+    align-items:center;
+}
+
 .mertbirresim{
-  border-radius: 100px;
+    border-radius: 100px;
     transition: transform 1s linear;
     height: 70%;
     width: auto;
