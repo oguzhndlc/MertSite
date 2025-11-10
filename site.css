@@ -35,8 +35,14 @@ body{
     justify-content:left;
     align-items:center;
     border-radius: 100px;
+    transition: all 1.25s ease;
     height: auto;
-    width: auto;
+    width:80px ;
+    background-color: azure;
+}
+.logo:hover{
+    height: auto;
+    width: 160px ;
     background-color: azure;
 }
 
