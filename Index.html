@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="tr">
+    <head>
+        <meta charset="UTF-8">
+        <title>Perdelium</title>
+        <link rel="stylesheet" href="site.css">
+        <script src="script.js"></script>
+    </head>
+    <body>
+        <img src="images/red-heart.png" alt="Sol Resim" class="side-img left">
+        <img src="images/red-heart.png" alt="Sağ Resim" class="side-img right">
+        <div class="header">
+            <div class="logo">
+                <img class="image" src="images/nobg_image.png" alt="">
+            </div>
+            <div class="pages"> 
+                <a href="Index.html" class="pagectrl">Home</a>
+                <a href="AboutUs.html" class="pagectrl">About us</a>
+                <a href="Contactus.html" class="pagectrl">Contact us</a>
+                <a href="Info.html" class="pagectrl">İnfo</a>
+                <a href="Privacy.html" class="pagectrl">Privacy</a>
+            </div>
+            
+            <div class="mert" >
+                <div id="yazi"></div>
+            </div>
+            <div style="height: 100%; width: 160px;">
+
+            </div>
+            <div class="hdbtn">
+                <button class="button" style="vertical-align:middle" onclick="Mertim()"><span>Change</span></button>
+            </div>
+
+        </div>
+        <div class="bodyy"> 
+            <div class="bdf">
+
+            </div> 
+            <div class="bds">
+                <img onclick="showImages()" class="mertbirresim" src="images/mertbirresim.jpg" alt="">
+            </div>
+            <div>
+
+            </div> 
+        </div>
+        <script>
+            const metin = "Merti Seviyoruz...";
+            const yaziDiv = document.getElementById("yazi");
+            let index = 0;
+            
+            function typeWriter() {
+              if (index < metin.length) {
+                yaziDiv.innerHTML += metin.charAt(index);
+                index++;
+                setTimeout(typeWriter, 200); // her harf arası 100ms bekler
+              }
+            }
+            
+            // Sayfa açıldığında başlat
+            window.onload = typeWriter;
+            </script>
+    </body>
+</html>

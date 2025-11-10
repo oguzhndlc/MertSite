@@ -1,0 +1,170 @@
+body{
+    background-color: rgb(169, 169, 202);
+}
+
+.header{
+    width: 100vw; 
+    height: 80px; 
+    background-color: aqua; 
+    align-content: center;
+    display: flex;
+}
+
+.mert{
+    border-radius: 5px;
+    width: 20%; 
+    height: 100%; 
+    display: flex; 
+    justify-content:center;
+    align-items:center;
+    background-color: green; 
+}
+
+#yazi{
+    color: azure;
+    font-size: 150%;
+    font-family: monospace;
+    white-space: pre
+}
+
+.logo{
+    height: auto;
+    width: auto;
+    background-color: rgb(197, 195, 195);
+}
+
+.pages{
+    height: 100%;
+    width: 40rem;
+    background-color: azure;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+}
+
+.hdbtn{
+    display:flex; 
+    justify-content:center;
+    align-items:center;
+    height: 100%;
+    width: 200px;
+
+}
+
+.pagectrl{
+    align-self: center;
+    padding: 10px;
+    margin: 10px;
+    font-size: large;
+    font-family: 'Courier New', Courier, monospace;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.image{
+    height: 100%;
+    width: 100%;
+}
+
+.button2:hover {
+    background-color: #008CBA;
+    color: white;
+}
+
+.button {
+    display: inline-block;
+    border-radius: 6px;
+    background-color: #f4511e;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 18px;
+    padding: 10px;
+    width: 150px;
+    cursor: pointer;
+  }
+  
+  .button span {
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+  }
+  
+  .button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    right: -20px;
+    transition: 0.5s;
+  }
+  
+  .button:hover span {
+    padding-right: 25px;
+  }
+  
+  .button:hover span:after {
+    opacity: 1;
+    right: 0;
+  }
+
+.bodyy{
+    display: flex;
+    height: 30rem;
+    width: 100%;
+}
+.bdf{
+    height: 30rem;
+    width: 20%;
+}
+.bds{
+    display:flex; 
+    justify-content:center;
+    align-items:center;
+    height: 30rem;
+    width: 60%;
+}
+.mertbirresim{
+    transition: transform 1s linear;
+    height: 70%;
+    width: auto;
+}
+.mertbirresim:hover {
+    transform: rotate(360deg);
+  }
+
+.side-img {
+  position: fixed;
+  bottom: 0;
+  width: 100px;
+  opacity: 0;
+  transform: scale(0.5) translateY(0);
+  transition: none;
+  pointer-events: none;
+}
+
+.side-img.left {
+  left: 20px;
+}
+
+.side-img.right {
+  right: 20px;
+}
+
+.side-img.animate {
+  animation: floatUp 2s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: scale(0.5) translateY(0);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.2) translateY(-200px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5) translateY(-300px);
+  }
+}
