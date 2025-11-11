@@ -2,14 +2,13 @@
 <html lang="tr">
     <head>
         <meta charset="UTF-8">
-        <title>Merti Seviyoruz</title>
+        <title id="title">Merti Seviyoruz</title>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/site.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Momo+Trust+Display&display=swap" rel="stylesheet">
         <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/script.js"></script>        
     </head>
     <body>
         <img src="images/red-heart.png" alt="Sol Resim" class="side-img left">
@@ -20,17 +19,24 @@
                 <img class="image" src="images/nobg_image.png" alt="">
             </div>
             <div class="pages"> 
-                <a href="Index.html" class="pagectrl">Home</a>
-                <a href="AboutUs.html" class="pagectrl">About</a>
-                <a href="Contactus.html" class="pagectrl">Contact</a>
-                <a href="Info.html" class="pagectrl">İnfo</a>
-                <a href="Privacy.html" class="pagectrl">Privacy</a>
-            </div>
-            <div style="height: 100%; width: 160px;">
-
+                <a href="Index.html" class="pagectrl" id="header-nav-1">Home</a>
+                <a href="AboutUs.html" class="pagectrl" id="header-nav-2">About</a>
+                <a href="Contactus.html" class="pagectrl" id="header-nav-3">Contact</a>
+                <a href="Info.html" class="pagectrl" id="header-nav-4">İnfo</a>
+                <a href="Privacy.html" class="pagectrl" id="header-nav-5">Privacy</a>
             </div>
             <div class="hdbtn">
-                <button class="button" style="vertical-align:middle" onclick="Mertim()"><span>Change</span></button>
+                <button class="button" style="vertical-align:middle" onclick="Mertim()" id="header-btn-1"><span>Change</span></button>
+            </div>
+            <div class="btn-group ms-auto" style=" display: flex; align-items: center; justify-content: flex-end; flex-shrink: 0; padding: 20px;">
+                <button type="button" class="btn btn-primary" id="header-btn-2">Dil Seçeneği</button>
+                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="visually-hidden">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" onclick="changeLang('tr')" href="#" id="header-btn-2-drop-1">Türkçe</a></li>
+                    <li><a class="dropdown-item" onclick="changeLang('en')" href="#" id="header-btn-2-drop-2">İngilizce</a></li>
+                </ul>
             </div>
 
         </div>
@@ -44,7 +50,7 @@
                 </div>
                 <div class="bdstxt" >
                     <div class="mert" >
-                        <div id="yazi"></div>
+                        <div id="body-animate-text"></div>
                     </div>
                 </div>
                 
@@ -53,21 +59,7 @@
 
             </div> 
         </div>
-        <script>
-            const metin = "Merti Seviyoruz...";
-            const yaziDiv = document.getElementById("yazi");
-            let index = 0;
-            
-            function typeWriter() {
-              if (index < metin.length) {
-                yaziDiv.innerHTML += metin.charAt(index);
-                index++;
-                setTimeout(typeWriter, 200); // her harf arası 100ms bekler
-              }
-            }
-            
-            // Sayfa açıldığında başlat
-            window.onload = typeWriter;
-            </script>
+        <script src="js/script.js"></script>        
+        <script src="js/lang.js"></script>
     </body>
 </html>

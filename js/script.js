@@ -63,3 +63,30 @@ function showImages() {
   leftImg.classList.add("animate");
   rightImg.classList.add("animate");
 }
+// script.js
+
+let index = 0;
+let metin = "";
+let yaziDiv = document.getElementById("body-animate-text");
+
+/**
+ * Typewriter animasyonu
+ */
+function typeWriter() {
+  if (index < metin.length) {
+    yaziDiv.textContent += metin.charAt(index);
+    index++;
+    setTimeout(typeWriter, 200); // harfler arası gecikme
+  }
+}
+
+/**
+ * Typewriter animasyonunu başlatır veya resetler
+ * @param {string} newText - Gösterilecek metin
+ */
+function startTypeWriter(newText) {
+  metin = newText;
+  index = 0;
+  yaziDiv.textContent = "";
+  typeWriter();
+}
