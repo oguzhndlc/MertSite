@@ -41,6 +41,9 @@ body{
     transition: all 1.25s ease;
 }
 
+.logo:hover{
+    width:160px;
+}
 
 .pages{
     height: 100%;
