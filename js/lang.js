@@ -9,16 +9,16 @@ function loadLanguage(lang) {
     .then(response => response.json())
     .then(data => {
       document.getElementById("title").textContent = data.title;
-      document.getElementById("header-nav-1").textContent = data["header-nav-1"];
-      document.getElementById("header-nav-2").textContent = data["header-nav-2"];
-      document.getElementById("header-nav-3").textContent = data["header-nav-3"];
-      document.getElementById("header-nav-4").textContent = data["header-nav-4"];
-      document.getElementById("header-nav-5").textContent = data["header-nav-5"];
-      document.getElementById("header-btn-1").textContent = data["header-btn-1"];
-      document.getElementById("header-btn-2").textContent = data["header-btn-2"];
-      document.getElementById("header-btn-2-drop-1").textContent = data["header-btn-2-drop-1"];
-      document.getElementById("header-btn-2-drop-2").textContent = data["header-btn-2-drop-2"];
 
+      const lang_cont = ["header-nav-1", "header-nav-2", "header-nav-3",
+        "header-nav-4","header-nav-5","header-btn-1","header-btn-2",
+        "header-btn-2-drop-1","header-btn-2-drop-2","galery-card-1-title",
+        "galery-card-1-examp","galery-card-1-btn"
+      ];
+
+      for (let i = 0; i < lang_cont.length; i++) {
+        document.getElementById(lang_cont[i]).textContent = data[lang_cont[i]];;
+      }
       // Typewriter animasyonu için
       startTypeWriter(data["body-animate-text"]);
 

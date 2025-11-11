@@ -1,13 +1,16 @@
 {
   "title": "Merti Seviyoruz",
   "header-nav-1": "Anasayfa",
-  "header-nav-2": "Hakkımda",
-  "header-nav-3": "İletişim",
-  "header-nav-4": "Bilgi",
+  "header-nav-2": "Galeri",
+  "header-nav-3": "Hakkımda",
+  "header-nav-4": "İletişim",
   "header-nav-5": "Gizlilik",
   "header-btn-1": "Değiştir",
   "header-btn-2": "Dil",
   "header-btn-2-drop-1": "Türkçe",
   "header-btn-2-drop-2": "İngilizce",
-  "body-animate-text": "Merti Seviyoruuuzzz..."
+  "body-animate-text": "Merti Seviyoruuuzzz...",
+  "galery-card-1-title": "Dijital Iron-Man Çizimi",
+  "galery-card-1-examp": "Daha fazlasını görmek için lütfen butona tıklayınız.",
+  "galery-card-1-btn": "İncele"
 }

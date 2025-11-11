@@ -1,14 +1,16 @@
 {
   "title": "We Love Mert",
   "header-nav-1": "Home",
-  "header-nav-2": "About",
-  "header-nav-3": "Contact",
-  "header-nav-4": "Info",
+  "header-nav-2": "Galery",
+  "header-nav-3": "About",
+  "header-nav-4": "Contact",
   "header-nav-5": "Privacy",
   "header-btn-1": "Change",
   "header-btn-2": "Language",
   "header-btn-2-drop-1": "Turkish",
   "header-btn-2-drop-2": "English",
-  "body-animate-text": "-Ɛ>- We Love Mert -<3-"
+  "body-animate-text": "-Ɛ>- We Love Mert -<3-",
+  "galery-card-1-title": "Digital Iron-Man Drawing",
+  "galery-card-1-examp": "Please click the button to see more.",
+  "galery-card-1-btn": "Review"
 }
-
