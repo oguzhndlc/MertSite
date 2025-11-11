@@ -1,16 +1,37 @@
 function iletiver(){
     alert("Mertim sınavların inşallH GÜZEL GEEÇERRRRRRR");
 }
-function Mertim(){
+function Mertim() {
+    // Mevcut arka plan rengini al
     let renk = window.getComputedStyle(document.body).backgroundColor;   
-    if (renk== "rgb(169, 169, 202)"){
-        document.body.style.backgroundColor = "rgb(143, 216, 165)";
-    }else if(renk == "rgb(143, 216, 165)"){
-        document.body.style.backgroundColor = "rgb(238, 218, 131)";
-    }else{
-        document.body.style.backgroundColor = "rgb(169, 169, 202)";
+
+    // Yeni renk değişkeni tanımla
+    let yeniRenk;
+
+    // Şartlara göre yeni rengi belirle
+    if (renk === "rgb(169, 169, 202)") {
+        yeniRenk = "rgb(143, 216, 165)";
+    } else if (renk === "rgb(143, 216, 165)") {
+        yeniRenk = "rgb(238, 218, 131)";
+    } else {
+        yeniRenk = "rgb(169, 169, 202)";
     }
+
+    // Arka plan rengini uygula
+    document.body.style.backgroundColor = yeniRenk;
+
+    // Rengi localStorage'a kaydet (kalıcı olsun)
+    localStorage.setItem("arkaplanRengi", yeniRenk);
 }
+
+// Sayfa her yüklendiğinde kaydedilen rengi uygula
+window.addEventListener("load", () => {
+    const kayitliRenk = localStorage.getItem("arkaplanRengi");
+    if (kayitliRenk) {
+        document.body.style.backgroundColor = kayitliRenk;
+    }
+});
+
 function baslatAnimasyon() {
     const sol = document.getElementById("resimSol");
     const sag = document.getElementById("resimSag");
