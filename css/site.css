@@ -2,6 +2,12 @@ body{
     background-color: rgb(169, 169, 202);
 }
 
+.momo-trust-display-regular {
+  font-family: "Momo Trust Display", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 .header{
     border-radius: 100px;
     width: 100vw; 
@@ -61,7 +67,7 @@ body{
     align-items:center;
     height: 100%;
     width: 250px;
-
+    font-family: "Momo Trust Display", sans-serif;
 }
 
 .pagectrl{
@@ -71,7 +77,10 @@ body{
     padding: 10px;
     margin: 10px;
     font-size: large;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: "Momo Trust Display", sans-serif;
+    font-family: "Momo Trust Display", sans-serif;
+    font-weight: 400;
+    font-style: normal;
     text-decoration: none;
     font-weight: bold;
 }
