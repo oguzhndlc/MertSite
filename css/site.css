@@ -82,6 +82,7 @@ body{
     align-items:center;
     background-color: rgb(169, 169, 202);
     color: white;
+    font-size: x-large;
     height: 50px;
     width: 150px;
     transition: 0.75s;
