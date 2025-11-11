@@ -156,9 +156,27 @@ body{
     width: 100%;
 }
 .bdf{
+    justify-content:center;
+    align-items:center;
+    display: flex;
     height: 30rem;
     width: 20%;
 }
+
+.bdt{
+    justify-content:flex-end;
+    align-items:flex-start;
+    display: flex;
+    height: 30rem;
+    width: 20%;
+}
+
+.bdt-btn{
+  padding: 10px;
+  height: fit-content;
+  width: fit-content;
+}
+
 .bds{
     
     height: 30rem;
@@ -182,12 +200,14 @@ body{
 }
 
 .mertbirresim{
+    z-index:-1;
+    position: relative;
     border-radius: 100px;
     transition: transform 1s linear;
     height: 70%;
     width: auto;
 }
-.mertbirresim:hover {
+.bdsimg:hover .mertbirresim {
     transform: rotate(360deg);
   }
 
