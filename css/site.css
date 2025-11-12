@@ -1,5 +1,6 @@
 body{
     background-color: rgb(169, 169, 202);
+    overflow-x: hidden;
 }
 
 .momo-trust-display-regular {
@@ -178,14 +179,14 @@ body{
 }
 
 .bds{
-    
     height: 30rem;
     width: 60%;
 }
 
 .bdsimg{
+    justify-self: center;
     height: 25rem; 
-    width: auto;
+    width: fit-content;
     display:flex; 
     justify-content:center;
     align-items:center;
