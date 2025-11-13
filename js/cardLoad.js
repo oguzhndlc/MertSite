@@ -18,7 +18,7 @@ async function loadCards() {
                 <div class="card-body">
                     <h5 class="card-title">${card.title}</h5>
                     <p class="card-text">${card.example}</p>
-                    <a href="cont_edit.html" class="btn btn-sm btn-warning">Düzenle</a>
+                    <a onclick="location.href='cont_edit.html?id=${card.id}'" class="btn btn-sm btn-warning">Düzenle</a>
                     <button class="btn btn-sm btn-danger">Sil</button>
                 </div>
             </div>

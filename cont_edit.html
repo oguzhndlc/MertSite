@@ -13,7 +13,7 @@
 
           <!-- KART -->
           <div class="card shadow-sm mb-4">
-            <img id="cardImage" src="images/no_content.png" class="card-img-top" alt="Kart Görseli">
+            <img id="cardImage" src="" class="card-img-top" alt="Kart Görseli">
             <div class="card-body">
               <h5 id="cardTitle" class="card-title">Kart Başlığı</h5>
               <p id="cardText" class="card-text">Bu, kart açıklamasıdır. Burada kartla ilgili kısa bir bilgi yer alır.</p>
@@ -70,7 +70,35 @@
         }
       });
     </script>
+    <script>
+      async function loadLink() {
+  try {
+    const response = await fetch('/.netlify/functions/getData');
+    if (!response.ok) throw new Error('Veri çekilemedi');
 
+    const cards = await response.json();
+
+    const params = new URLSearchParams(window.location.search);
+    const id = parseInt(params.get("id"));
+    // Örnek: sadece ilk veriyi alıyoruz
+    const firstCard = cards.find(card => card.id === 3);
+
+    const imagecard = document.getElementById('cardImage');
+    imagecard.src = firstCard.photo_url;   // Linkin görünen metni
+
+    const titlecard = document.getElementById('cardTitle');
+    titlecard.textContent = firstCard.title; 
+
+    const textcard = document.getElementById('cardText');
+    textcard.textContent = firstCard.example; 
+
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
+loadLink();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
