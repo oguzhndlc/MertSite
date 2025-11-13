@@ -110,3 +110,23 @@ async function loadHeader() {
 
 // Sayfa açıldığında header'ı yükle
 window.addEventListener("DOMContentLoaded", loadHeader);
+
+
+
+let pressed = 0;
+
+function openAdmin() {
+    pressed += 1; // Tıklamayı say
+    console.log("Tıklama sayısı: " + pressed); // Konsolda kontrol edebilirsin
+
+    const bgclr = window.getComputedStyle(document.body).backgroundColor;
+
+    if (pressed === 3) {
+        // Aynı sekmede aç
+        if(bgclr === "rgb(143, 216, 165)"){
+        window.location.href = "dashboard.html"; 
+        }
+        pressed=0;
+        // pressed = 0;  // Bu satır aslında gerekli değil çünkü sayfa değişiyor
+    }
+}
