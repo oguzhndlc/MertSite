@@ -1,4 +1,4 @@
-// netlify/functions/get-users.js
+// netlify/functions/getData.js
 import pkg from "pg";
 const { Client } = pkg;
 
