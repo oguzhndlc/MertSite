@@ -10,7 +10,7 @@ export async function handler(event, context) {
 
   try {
     await client.connect();
-    const result = await client.query("SELECT * FROM cards WHERE id = 1;");
+    const result = await client.query("SELECT * FROM cards;");
     await client.end();
 
     return {
