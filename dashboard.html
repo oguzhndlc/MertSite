@@ -96,7 +96,8 @@
       `;
       icerikAlani.appendChild(yeniCard);
     });
-
+  </script>
+  <script>
      async function loadCards() {
       try {
         const response = await fetch('/.netlify/functions/getData'); // Function URL
@@ -113,7 +114,7 @@
           col.innerHTML = `
 
             <div class="card shadow-sm">
-              <img src="${card.photo-url}" class="card-img-top" alt="...">
+              <img src="${card['photo-url']}" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title">${card.title}</h5>
                 <p class="card-text">${card.example}</p>
