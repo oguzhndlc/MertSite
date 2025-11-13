@@ -14,7 +14,7 @@ async function loadCards() {
           col.innerHTML = `
 
             <div class="card" style="width: 17rem; height: 24rem;">
-                <img src="${card.photo_url}" class="card-img-top" style="width: auto; height: 3rem;" alt="...">
+                <img src="${card.photo_url}" class="card-img-top" style="width: auto; height: 12rem;" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">${card.title}</h5>
                     <p class="card-text">${card.example}</p>
