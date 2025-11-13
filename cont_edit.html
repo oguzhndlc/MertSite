@@ -79,9 +79,9 @@
     const cards = await response.json();
 
     const params = new URLSearchParams(window.location.search);
-    const id = parseInt(params.get("id"));
+    const ids = parseInt(params.get("id"));
     // Örnek: sadece ilk veriyi alıyoruz
-    const firstCard = cards.find(card => card.id === 3);
+    const firstCard = cards.find(card => card.id === ids);
 
     const imagecard = document.getElementById('cardImage');
     imagecard.src = firstCard.photo_url;   // Linkin görünen metni
