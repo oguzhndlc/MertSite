@@ -13,14 +13,14 @@ async function loadCards() {
 
           col.innerHTML = `
 
-            <div class="card shadow-sm">
-              <img src="${card.photo_url}" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">${card.title}</h5>
-                <p class="card-text">${card.example}</p>
-                <a href="cont_edit.html" class="btn btn-sm btn-warning">Düzenle</a>
-                <button class="btn btn-sm btn-danger">Sil</button>
-              </div>
+            <div class="card" style="width: 17rem; height: 24rem;">
+                <img src="${card.photo_url}" class="card-img-top" style="width: auto; height: 12rem;" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">${card.title}</h5>
+                    <p class="card-text">${card.example}</p>
+                    <a href="cont_edit.html" class="btn btn-sm btn-warning">Düzenle</a>
+                    <button class="btn btn-sm btn-danger">Sil</button>
+                </div>
             </div>
           `;
 
