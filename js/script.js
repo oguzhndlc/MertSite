@@ -114,19 +114,40 @@ window.addEventListener("DOMContentLoaded", loadHeader);
 
 
 let pressed = 0;
+let btnopened = false;
+let linker;
 
 function openAdmin() {
-    pressed += 1; // Tıklamayı say
-    console.log("Tıklama sayısı: " + pressed); // Konsolda kontrol edebilirsin
+    if(!btnopened){
+      pressed += 1; // Tıklamayı say
+      console.log("Tıklama sayısı: " + pressed); // Konsolda kontrol edebilirsin
 
-    const bgclr = window.getComputedStyle(document.body).backgroundColor;
+      const bgclr = window.getComputedStyle(document.body).backgroundColor;
 
-    if (pressed === 3) {
-        // Aynı sekmede aç
-        if(bgclr === "rgb(143, 216, 165)"){
-        window.location.href = "dashboard.html"; 
-        }
+      if (pressed === 3) {
+          // Aynı sekmede aç
+          if(bgclr === "rgb(143, 216, 165)" && !btnopened){
+            linker = document.createElement("a");
+            linker.href = "dashboard.html";
+            linker.textContent = "Admin";
+            linker.className="pagectrl";
+            document.getElementById("pagess").appendChild(linker);
+            console.log("Button Açıldı. Tebrikler!!!");
+            pressed=0;
+            btnopened=true;
+          }
+          pressed=0;
+          // pressed = 0;  // Bu satır aslında gerekli değil çünkü sayfa değişiyor
+      }
+    }else{
+      console.log("Button açıldı artık tıklamayı bırak");
+      pressed+=1;
+      if(pressed===5){
+        document.getElementById("pagess").removeChild(linker);
         pressed=0;
-        // pressed = 0;  // Bu satır aslında gerekli değil çünkü sayfa değişiyor
+        btnopened=false;
+        console.log("Al işte gitti buton gördün mü ! neyse bir daha deneyebilirsin")
+      }
     }
+    
 }
