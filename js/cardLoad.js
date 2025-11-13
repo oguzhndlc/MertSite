@@ -12,15 +12,16 @@ async function loadCards() {
           col.className = 'col-md-4 mb-4';
 
           col.innerHTML = `
-
             <div class="card" style="width: 17rem; height: 24rem;">
-                <img src="${card.photo_url}" class="card-img-top" style="width: auto; height: 12rem;" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">${card.title}</h5>
-                    <p class="card-text">${card.example}</p>
-                    <a onclick="location.href='cont_edit.html?id=${card.id}'" class="btn btn-sm btn-warning">Düzenle</a>
-                    <button class="btn btn-sm btn-danger">Sil</button>
-                </div>
+              <div style="width: 100%; height:auto; display: flex; justify-content: center;">
+                <img src="${card.photo_url}" class="card-img-top" style="width: max-content; height: 12rem;" alt="...">
+              </div>            
+              <div class="card-body">
+                <h5 class="card-title">${card.title}</h5>
+                <p class="card-text">${card.example}</p>
+                <a onclick="location.href='cont_edit.html?id=${card.id}'" class="btn btn-sm btn-warning">Düzenle</a>
+                <button class="btn btn-sm btn-danger">Sil</button>
+              </div>
             </div>
           `;
 
