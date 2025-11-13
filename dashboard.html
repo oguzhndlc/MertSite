@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yönetici Mert</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .sidebar {
+      height: 100vh;
+      background-color: #343a40;
+      color: white;
+      padding-top: 20px;
+    }
+    .sidebar a {
+      color: #adb5bd;
+      text-decoration: none;
+      display: block;
+      padding: 10px 20px;
+    }
+    .sidebar a:hover {
+      background-color: #495057;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sol Menü -->
+      <div class="col-md-3 col-lg-2 sidebar">
+        <h4 class="text-center mb-4">Yönetici Paneli</h4>
+        <a href="#">Dashboard</a>
+        <a href="#">İçerikler</a>
+        <a href="#">Kullanıcılar</a>
+        <a href="#">Ayarlar</a>
+      </div>
+
+      <!-- İçerik Alanı -->
+      <div class="col-md-9 col-lg-10 p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3>İçerikler</h3>
+          <button class="btn btn-primary" id="yeniIcerik">Yeni İçerik Ekle</button>
+        </div>
+
+        <div class="row" id="icerikAlani">
+          <!-- Card örneği -->
+          <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+              <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Başlık 1</h5>
+                <p class="card-text">Bu bir örnek içeriktir.</p>
+                <a href="cont_edit.html" class="btn btn-sm btn-warning">Düzenle</a>
+                <button class="btn btn-sm btn-danger">Sil</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dinamik card’lar buraya eklenecek -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Yönetici Panel JS -->
+  <script>
+    const icerikAlani = document.getElementById("icerikAlani");
+    const yeniIcerikBtn = document.getElementById("yeniIcerik");
+
+    yeniIcerikBtn.addEventListener("click", () => {
+      const yeniCard = document.createElement("div");
+      yeniCard.classList.add("col-md-4", "mb-4");
+      yeniCard.innerHTML = `
+        <div class="card shadow-sm">
+          <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Yeni İçerik</h5>
+            <p class="card-text">Yeni içerik eklendi.</p>
+            <button class="btn btn-sm btn-warning">Düzenle</button>
+            <button class="btn btn-sm btn-danger">Sil</button>
+          </div>
+        </div>
+      `;
+      icerikAlani.appendChild(yeniCard);
+    });
+  </script>
+</body>
+</html>
