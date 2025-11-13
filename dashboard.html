@@ -87,41 +87,6 @@
       icerikAlani.appendChild(yeniCard);
     });
   </script>
-  <script>
-     async function loadCards() {
-      try {
-        const response = await fetch('/.netlify/functions/getData'); // Function URL
-        if (!response.ok) throw new Error('Veri çekilemedi');
-
-        const cards = await response.json();
-        const container = document.getElementById('icerikAlani');
-
-        cards.forEach(card => {
-          // Card elementini oluştur
-          const col = document.createElement('div');
-          col.className = 'col-md-4 mb-4';
-
-          col.innerHTML = `
-
-            <div class="card shadow-sm">
-              <img src="${card.photo_url}" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">${card.title}</h5>
-                <p class="card-text">${card.example}</p>
-                <a href="cont_edit.html" class="btn btn-sm btn-warning">Düzenle</a>
-                <button class="btn btn-sm btn-danger">Sil</button>
-              </div>
-            </div>
-          `;
-
-          container.appendChild(col);
-        });
-      } catch (error) {
-        console.error('Error fetching cards:', error);
-      }
-    }
-
-    loadCards();
-  </script>
+  <script src="js/cardLoad.js"></script>
 </body>
 </html>
