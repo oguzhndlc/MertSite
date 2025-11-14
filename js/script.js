@@ -40,17 +40,22 @@ function Mertim() {
 
 
 function adminLogin(){
+  // Eğer daha önce hiç giriş yapılmadıysa varsayılan false ata
   if (!localStorage.getItem("loggedIn")) {
-  localStorage.setItem("loggedIn", "false");
+    localStorage.setItem("loggedIn", "false");
   }
-  console.log("Giriş durumu"+localStorage.getItem("loggedIn"))
-  if (localStorage.getItem("loggedIn")) {
+
+  const loggedIn = localStorage.getItem("loggedIn");
+  console.log("Giriş durumu: " + loggedIn);
+
+  // true stringi kontrol et
+  if (loggedIn === "true") {
     window.location.href = "dashboard.html";
   } else {
     window.location.href = "login.html";
   }
-
 }
+
 
 // Sayfa açıldığında arka plan rengini uygula
 window.addEventListener("load", () => {
