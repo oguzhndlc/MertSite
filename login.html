@@ -182,7 +182,7 @@ async function login() {
     if (user) {
       // Giriş başarılı → localStorage ile durum kaydet ve admin sayfasına yönlendir
       localStorage.setItem("loggedIn", "true");
-      window.location.href = "/admin.html"; // admin sayfanın doğru URL'si
+      window.location.href = "/dashboard.html"; // admin sayfanın doğru URL'si
     } else {
       showToast("Kullanıcı adı veya şifreyi yanlış yazmış olabilir misin canım benim!");
     }
