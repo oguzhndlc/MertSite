@@ -21,6 +21,7 @@
               <p id="cardText" class="card-text">Bu, kart açıklamasıdır. Burada kartla ilgili kısa bir bilgi yer alır.</p>
             </div>
           </div>
+
           <!-- DÜZENLEME FORMU -->
           <div class="card p-3 shadow-sm">
             <h5 class="mb-3">Kartı Düzenle</h5>
@@ -39,9 +40,12 @@
                 <label for="textInput" class="form-label">Açıklama</label>
                 <textarea class="form-control" id="textInput" rows="3" placeholder="Yeni açıklama girin..."></textarea>
               </div>
+
               <div style="display:flex;">
                 <button type="button" class="btn btn-primary w-50" id="updateBtn">Güncelle</button>
                 <button type="button" class="btn btn-success w-50" id="saveBtn">Kaydet</button>
+
+                <!-- Toast -->
                 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
                   <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="toast-header">
@@ -49,12 +53,11 @@
                       <strong class="me-auto">Oğuzhan</strong>
                       <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
-                    <div id="texttoast" class="toast-body">
-                      
-                    </div>
+                    <div id="texttoast" class="toast-body"></div>
                   </div>
                 </div>
               </div>
+
             </form>
           </div>
 
@@ -64,67 +67,62 @@
 
     <script>
       const updateBtn = document.getElementById('updateBtn');
-      const saveButton = document.getElementById("saveBtn");
+      const saveBtn = document.getElementById("saveBtn");
 
+      // Önizleme ve DOM güncelleme
       updateBtn.addEventListener('click', () => {
         const title = document.getElementById('titleInput').value;
         const text = document.getElementById('textInput').value;
         const fileInput = document.getElementById('imageFile');
         const imageElement = document.getElementById('cardImage');
 
-        // Başlık ve açıklama güncelle
         if (title) document.getElementById('cardTitle').textContent = title;
         if (text) document.getElementById('cardText').textContent = text;
 
-        // Resim önizleme
         if (fileInput.files && fileInput.files[0]) {
           const reader = new FileReader();
-          reader.onload = (e) => {
-            imageElement.src = e.target.result;
-          };
+          reader.onload = (e) => { imageElement.src = e.target.result; };
           reader.readAsDataURL(fileInput.files[0]);
         }
       });
 
-      saveButton.addEventListener("click", async () => {
-        const titlec = document.getElementById('titleInput').value;
-        const textc = document.getElementById('textInput').value;
-        const fileInputc = document.getElementById('imageFile');
+      // Kaydetme (DB ve GitHub)
+      saveBtn.addEventListener('click', async () => {
+        const title = document.getElementById('titleInput').value;
+        const text = document.getElementById('textInput').value;
+        const fileInput = document.getElementById('imageFile');
         const params = new URLSearchParams(window.location.search);
-        const ids = parseInt(params.get("id"));
-        const file = fileInputc.files[0];
-
-        if (!file) {
-          showtoast("Cancağızım bir resim seçmelisin. Lütfen !!!");
-          return;
-        }
-
-        const fileNamec = file.name;
-        const namefilec = "galery_" + ids + "." + fileNamec.split(".").pop();
-        const pathfilec = "cards/" + namefilec;   // Backend ve frontend ile uyumlu
-        const allpathfilec = "images/" + pathfilec;
+        const id = parseInt(params.get("id"));
+        const file = fileInput.files[0];
         const branch = 'main';
 
-        // Kart bilgilerini güncelle
+        // 1️⃣ Postgres DB Güncelle
         try {
-          const updateRes = await fetch("/.netlify/functions/updateCards", {
+          await fetch("/.netlify/functions/updateCards", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              id: ids,
-              photo_url: allpathfilec,
-              title: titlec,
-              example: textc
+              id,
+              photo_url: file ? `images/cards/galery_${id}.${file.name.split('.').pop()}` : document.getElementById('cardImage').src,
+              title,
+              example: text
             })
           });
-          await updateRes.json();
         } catch (err) {
-          console.error("Güncelleme hatası:", err);
-          showtoast("Kart güncellenemedi. Hata: " + err.message);
+          showToast("Kart güncellenemedi: " + err.message);
           return;
         }
 
-        // Dosyayı GitHub'a yükle
+        // 2️⃣ Dosya seçilmediyse GitHub yüklemeyi atla
+        if (!file) {
+          showToast("✅ Kart güncellendi (resim değişmedi).");
+          return;
+        }
+
+        // 3️⃣ GitHub yükleme
+        const extension = file.name.split('.').pop();
+        const fileName = `galery_${id}.${extension}`;
+
         const reader = new FileReader();
         reader.onload = async () => {
           const base64 = reader.result.split(',')[1];
@@ -132,59 +130,45 @@
             const res = await fetch('/.netlify/functions/uploadToGitHub', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ filename: namefilec, content: base64, branch })
+              body: JSON.stringify({ filename: fileName, content: base64, branch })
             });
             const data = await res.json();
-            if (res.ok) {
-              console.log(`Başarılı! Dosya: ${data.file} | URL: ${data.url}`);
-              showtoast("✅ Kayıt alındı canım sıkıntı yok.✅");
-            } else {
-              console.error("Hata:", data);
-              showtoast(`❌ Canım bir hata oluştu da bana şunun fotosunu bir atıver: ${JSON.stringify(data)}`);
-            }
-          } catch (err) {
-            console.error("Hata:", err);
-            showtoast(`❌ Canım bir sıkıntı var bana deyiver şunu (Gerçek bana): ${err.message}`);
-          }
+            if (res.ok) showToast("✅ Kart ve resim güncellendi!");
+            else showToast(`❌ Hata oluştu: ${JSON.stringify(data)}`);
+          } catch (err) { showToast(`❌ Hata: ${err.message}`); }
         };
         reader.readAsDataURL(file);
       });
 
-      function showtoast(message){
-        const toastLiveExample = document.getElementById('liveToast')
-        const toasttext = document.getElementById("texttoast")
+      // Toast helper
+      function showToast(message) {
+        const toastLiveExample = document.getElementById('liveToast');
+        const toasttext = document.getElementById("texttoast");
         toasttext.innerText = message;
-        const toast = new bootstrap.Toast(toastLiveExample)
-        toast.show()
+        const toast = new bootstrap.Toast(toastLiveExample);
+        toast.show();
       }
 
-            async function loadLink() {
-      try {
-        const response = await fetch('/.netlify/functions/getData');
-        if (!response.ok) throw new Error('Veri çekilemedi');
+      // Sayfa yüklendiğinde DB'den veriyi çek
+      async function loadLink() {
+        try {
+          const response = await fetch('/.netlify/functions/getData');
+          if (!response.ok) throw new Error('Veri çekilemedi');
 
-        const cards = await response.json();
+          const cards = await response.json();
+          const params = new URLSearchParams(window.location.search);
+          const ids = parseInt(params.get("id"));
+          const card = cards.find(card => card.id === ids);
+          if (!card) return;
 
-        const params = new URLSearchParams(window.location.search);
-        const ids = parseInt(params.get("id"));
-        // Örnek: sadece ilk veriyi alıyoruz
-        const firstCard = cards.find(card => card.id === ids);
+          document.getElementById('cardImage').src = card.photo_url;
+          document.getElementById('cardTitle').textContent = card.title;
+          document.getElementById('cardText').textContent = card.example;
 
-        const imagecard = document.getElementById('cardImage');
-        imagecard.src = firstCard.photo_url;   // Linkin görünen metni
-
-        const titlecard = document.getElementById('cardTitle');
-        titlecard.textContent = firstCard.title; 
-
-        const textcard = document.getElementById('cardText');
-        textcard.textContent = firstCard.example; 
-
-      } catch (error) {
-        console.error('Error fetching data:', error);
+        } catch (error) { console.error('Error fetching data:', error); }
       }
-    }
 
-    loadLink();
+      loadLink();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
