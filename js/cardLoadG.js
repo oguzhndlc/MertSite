@@ -1,6 +1,6 @@
 async function loadCards() {
       try {
-        const response = await fetch('/.netlify/functions/getData'); // Function URL
+        const response = await fetch('/.netlify/functions/getCards'); // Function URL
         if (!response.ok) throw new Error('Veri çekilemedi');
 
         const cards = await response.json();

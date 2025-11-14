@@ -153,7 +153,7 @@
       // Sayfa yüklendiğinde DB'den veriyi çek
       async function loadLink() {
         try {
-          const response = await fetch('/.netlify/functions/getData');
+          const response = await fetch('/.netlify/functions/getCards');
           if (!response.ok) throw new Error('Veri çekilemedi');
 
           const cards = await response.json();
