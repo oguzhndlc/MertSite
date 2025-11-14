@@ -1,5 +1,5 @@
 // netlify/functions/uploadToGitHub.js
-import fetch from "node-fetch";
+// import fetch from "node-fetch";  <-- bunu sil
 
 export const handler = async (event) => {
   try {
@@ -9,12 +9,11 @@ export const handler = async (event) => {
 
     const { filename, content, branch } = JSON.parse(event.body);
 
-    const repoOwner = "oguzhndlc"; // GitHub kullanıcı adı
-    const repoName = "MertSite";    // Repo adı
+    const repoOwner = "oguzhndlc";
+    const repoName = "MertSite";
     const filePath = "images/cards/" + filename;
-    const token = process.env.GITHUB_TOKEN; // Netlify ortam değişkeni
+    const token = process.env.GITHUB_TOKEN;
 
-    // 1️⃣ Dosya var mı kontrol et
     const checkUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}?ref=${branch}`;
     let sha = null;
 
@@ -22,14 +21,13 @@ export const handler = async (event) => {
 
     if (check.ok) {
       const existing = await check.json();
-      sha = existing.sha; // varsa güncellemek için sha al
+      sha = existing.sha;
     }
 
-    // 2️⃣ Dosyayı yükle veya güncelle
     const bodyData = {
       message: sha ? `Update ${filename}` : `Add ${filename}`,
-      content: content,
-      branch: branch
+      content,
+      branch,
     };
     if (sha) bodyData.sha = sha;
 
@@ -37,9 +35,9 @@ export const handler = async (event) => {
       method: "PUT",
       headers: {
         Authorization: `token ${token}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(bodyData)
+      body: JSON.stringify(bodyData),
     });
 
     if (!upload.ok) {
@@ -54,8 +52,8 @@ export const handler = async (event) => {
       body: JSON.stringify({
         message: "Dosya GitHub'a yüklendi!",
         file: result.content.path,
-        url: result.content.html_url
-      })
+        url: result.content.html_url,
+      }),
     };
   } catch (err) {
     return { statusCode: 500, body: `Hata: ${err.message}` };
