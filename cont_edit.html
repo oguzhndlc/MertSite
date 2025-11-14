@@ -134,7 +134,7 @@
               body: JSON.stringify({ filename: fileName, content: base64, branch })
             });
             const data = await res.json();
-            if (res.ok) showToast("✅ Kart ve resim güncellendi!");
+            if (res.ok) showToast("✅ Kart ve resim güncellendi!"),window.location.href = "dashboard.html";
             else showToast(`❌ Hata oluştu: ${JSON.stringify(data)}`);
           } catch (err) { showToast(`❌ Hata: ${err.message}`); }
         };
