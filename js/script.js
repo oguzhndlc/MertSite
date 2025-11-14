@@ -25,7 +25,7 @@ function Mertim() {
 
   if(yeniRenk === "rgb(143, 216, 165)" && !btnopened){
     linker = document.createElement("a");
-    linker.href = "dashboard.html";
+    linker.onclick=adminLogin;
     linker.textContent = "Admin";
     linker.className="pagectrl";
     document.getElementById("pagess").appendChild(linker);
@@ -35,6 +35,17 @@ function Mertim() {
       document.getElementById("pagess").removeChild(linker);
       btnopened=false;
   }
+}
+
+localStorage.setItem("loggedIn","false")
+
+function adminLogin(){
+  if (!localStorage.getItem("loggedIn")) {
+    window.location.href = "login.html";
+  } else {
+    window.location.href = "dashboard.html";
+  }
+
 }
 
 // Sayfa açıldığında arka plan rengini uygula

@@ -148,22 +148,55 @@ body {
     <button onclick="login()">Giriş Yap</button>
 
     <h2>&nbsp;</h2>
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+                  <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                      <img src="images/profiles/sup_profile.png" style="width: 10%; height: 10%;" class="rounded me-2" alt="...">
+                      <strong class="me-auto">Oğuzhan</strong>
+                      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div id="texttoast" class="toast-body"></div>
+                  </div>
+                </div>
   </div>
 </div>
 
 <script>
-function login() {
+async function login() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
 
-  // Basit demo giriş kontrolü
-  if (username === "admin@example.com" && password === "1234") {
-    localStorage.setItem("loggedIn", "true");
-    window.location.href = "/admin"; // Netlify yönlendirmesi varsa çalışır
-  } else {
-    alert("Kullanıcı adı veya şifre yanlış!");
+  try {
+    // Netlify function'dan kullanıcı verilerini çekiyoruz
+    const response = await fetch('/.netlify/functions/getData');
+    if (!response.ok) throw new Error('Veri çekilemedi');
+
+    const users = await response.json(); // Örn: [{email:"admin@example.com", password:"1234"}]
+
+    // Girilen bilgiyi kontrol et
+    const user = users.find(u => u._user_name === username && u._password === password);
+
+    if (user) {
+      // Giriş başarılı → localStorage ile durum kaydet ve admin sayfasına yönlendir
+      localStorage.setItem("loggedIn", "true");
+      window.location.href = "/admin.html"; // admin sayfanın doğru URL'si
+    } else {
+      showToast("Kullanıcı adı veya şifreyi yanlış yazmış olabilir misin canım benim!");
+    }
+
+  } catch (error) {
+    console.error("Login sırasında hata:", error);
+    showToast("Giriş yapılırken bir hata oluştu canım benim bir daha deneyiver!"); 
   }
 }
+
+function showToast(message) {
+        const toastLiveExample = document.getElementById('liveToast');
+        const toasttext = document.getElementById("texttoast");
+        toasttext.innerText = message;
+        const toast = new bootstrap.Toast(toastLiveExample);
+        toast.show();
+      }
 </script>
 
 </body>

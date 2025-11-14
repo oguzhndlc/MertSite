@@ -116,6 +116,7 @@
         // 2️⃣ Dosya seçilmediyse GitHub yüklemeyi atla
         if (!file) {
           showToast("✅ Kart güncellendi (resim değişmedi).");
+          window.location.href = "dashboard.html";
           return;
         }
 
