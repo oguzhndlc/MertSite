@@ -44,6 +44,7 @@
               <div style="display:flex;">
                 <button type="button" class="btn btn-primary w-50" id="updateBtn">Güncelle</button>
                 <button type="button" class="btn btn-success w-50" id="saveBtn">Kaydet</button>
+                <button type="button" class="btn btn-danger w-50" id="OutBtn">Vazgeç</button>
 
                 <!-- Toast -->
                 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
@@ -68,6 +69,11 @@
     <script>
       const updateBtn = document.getElementById('updateBtn');
       const saveBtn = document.getElementById("saveBtn");
+      const outBtn = document.getElementById("outBtn");
+
+      outBtn.addEventListener('click', () => {
+        window.location.href("dashboard.html");
+      });
 
       // Önizleme ve DOM güncelleme
       updateBtn.addEventListener('click', () => {
