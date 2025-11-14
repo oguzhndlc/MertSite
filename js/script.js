@@ -37,9 +37,12 @@ function Mertim() {
   }
 }
 
-localStorage.setItem("loggedIn","false")
+
 
 function adminLogin(){
+  if (!localStorage.getItem("loggedIn")) {
+  localStorage.setItem("loggedIn", "false");
+}
   if (!localStorage.getItem("loggedIn")) {
     window.location.href = "login.html";
   } else {
