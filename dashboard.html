@@ -87,6 +87,25 @@
       icerikAlani.appendChild(yeniCard);
     });
   </script>
+  <script>
+    function adminLogin() {
+  // Eğer daha önce hiç giriş yapılmadıysa varsayılan false ata
+  if (!sessionStorage.getItem("loggedIn")) {
+    sessionStorage.setItem("loggedIn", "false");
+  }
+
+  const loggedIn = sessionStorage.getItem("loggedIn");
+  console.log("Giriş durumu: " + loggedIn);
+
+  if (loggedIn === "true") {
+    window.location.href = "dashboard.html";
+  } else {
+    window.location.href = "login.html";
+  }
+}
+
+adminLogin();
+  </script>
   <script src="js/cardLoad.js"></script>
 </body>
 </html>
