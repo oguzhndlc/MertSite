@@ -97,10 +97,9 @@
   const loggedIn = sessionStorage.getItem("loggedIn");
   console.log("Giriş durumu: " + loggedIn);
 
-  if (loggedIn === "true") {
-    window.location.href = "dashboard.html";
-  } else {
+  if (loggedIn === "false") {
     window.location.href = "login.html";
+
   }
 }
 
