@@ -39,16 +39,15 @@ function Mertim() {
 
 
 
-function adminLogin(){
+function adminLogin() {
   // Eğer daha önce hiç giriş yapılmadıysa varsayılan false ata
-  if (!localStorage.getItem("loggedIn")) {
-    localStorage.setItem("loggedIn", "false");
+  if (!sessionStorage.getItem("loggedIn")) {
+    sessionStorage.setItem("loggedIn", "false");
   }
 
-  const loggedIn = localStorage.getItem("loggedIn");
+  const loggedIn = sessionStorage.getItem("loggedIn");
   console.log("Giriş durumu: " + loggedIn);
 
-  // true stringi kontrol et
   if (loggedIn === "true") {
     window.location.href = "dashboard.html";
   } else {
