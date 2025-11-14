@@ -42,11 +42,12 @@ function Mertim() {
 function adminLogin(){
   if (!localStorage.getItem("loggedIn")) {
   localStorage.setItem("loggedIn", "false");
-}
-  if (!localStorage.getItem("loggedIn")) {
-    window.location.href = "login.html";
-  } else {
+  }
+  console.log("Giriş durumu"+localStorage.getItem("loggedIn"))
+  if (localStorage.getItem("loggedIn")) {
     window.location.href = "dashboard.html";
+  } else {
+    window.location.href = "login.html";
   }
 
 }
