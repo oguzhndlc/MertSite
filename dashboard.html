@@ -92,29 +92,29 @@
 
   <!-- Yönetici Panel JS -->
   <script>
-    const icerikAlani = document.getElementById("icerikAlani");
-    const yeniIcerikBtn = document.getElementById("yeniIcerik");
+    // Yeni içerik ekleme
+const icerikAlani = document.getElementById("icerikAlani");
+const yeniIcerikBtn = document.getElementById("yeniIcerik");
 
-    yeniIcerikBtn.addEventListener("click", () => {
-      const yeniCard = document.createElement("div");
-      yeniCard.classList.add("col-md-4", "mb-4");
-      yeniCard.innerHTML = `
-        <div class="card shadow-sm">
-          <img src="images/cards/galery_0.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Yeni İçerik</h5>
-            <p class="card-text">Yeni içerik eklendi.</p>
-            <a href="cont_edit.html"  class="btn btn-sm btn-warning">Düzenle</a>
-            <button class="btn btn-sm btn-danger">Sil</button>
-          </div>
-        </div>
-      `;
-      icerikAlani.appendChild(yeniCard);
-    });
-  </script>
-  <script>
-    function adminLogin() {
-  // Eğer daha önce hiç giriş yapılmadıysa varsayılan false ata
+yeniIcerikBtn.addEventListener("click", () => {
+  const yeniCard = document.createElement("div");
+  yeniCard.classList.add("col-md-4", "mb-4");
+  yeniCard.innerHTML = `
+    <div class="card shadow-sm">
+      <img src="images/cards/galery_0.jpg" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Yeni İçerik</h5>
+        <p class="card-text">Yeni içerik eklendi.</p>
+        <a href="cont_edit.html"  class="btn btn-sm btn-warning">Düzenle</a>
+        <button class="btn btn-sm btn-danger" onclick="deleteCard(this)" id="adm-btn-new">Sil</button>
+      </div>
+    </div>
+  `;
+  icerikAlani.appendChild(yeniCard);
+});
+
+// Admin login kontrolü
+function adminLogin() {
   if (!sessionStorage.getItem("loggedIn")) {
     sessionStorage.setItem("loggedIn", "false");
   }
@@ -129,49 +129,48 @@
 
 adminLogin();
 
+// Card silme fonksiyonu
 async function deleteCard(delbtn) {
-  // delbtn id'sinin son kısmını alıyoruz
   const delbtnid = delbtn.id.split('-').pop();
-
-  const btnSil = document.getElementById(delbtn.id); // HTML elementini al
+  const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
   const evetBtn = document.getElementById("evetBtn");
   const hayirBtn = document.getElementById("hayirBtn");
 
-  // Bootstrap modal nesnesi
-  const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+  confirmModal.show();
 
-  // Sil butonuna tıklandığında modal aç
-  btnSil.addEventListener('click', () => {
-    confirmModal.show();
-  });
-
-  // Evet butonuna tıklandığında işlem gerçekleştir
-  evetBtn.addEventListener('click', async () => {
+  const onConfirm = async () => {
     confirmModal.hide();
+    evetBtn.removeEventListener('click', onConfirm);
+
+    // Card’ı DOM’dan kaldır
+    const cardElement = delbtn.closest('.col-md-4');
+    if (cardElement) cardElement.remove();
 
     try {
-      const response = await fetch("/.netlify/functions/deleteCards", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: delbtnid })
-      });
+      // Backend’e bağlı card’lar için silme isteği
+      if(delbtnid !== "new"){ 
+        const response = await fetch("/.netlify/functions/deleteCards", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: delbtnid })
+        });
 
-      const data = await response.json();
-      document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+        const data = await response.json();
+        console.log("Silme yanıtı:", data);
+      }
+
       showToast("Canım benim kartı çöpe gönderdim. Canımsın");
     } catch (err) {
       console.error(err);
       showToast("Çöp kutusuna isabet ettiremedim yaaaa. Bir hata oldu bunu bana(Gerçek bana) bir iletiver.");
     }
-  });
+  };
 
-  // Hayır butonuna tıklandığında işlem gerçekleştir
-  hayirBtn.addEventListener('click', () => {
-    confirmModal.hide();
-    showToast("Tamaaam vazgeçiyoruz zaten bence güzel bir içerik.");
-  });
+  evetBtn.addEventListener('click', onConfirm, { once: true });
+  hayirBtn.addEventListener('click', () => confirmModal.hide(), { once: true });
 }
 
+// Toast gösterme fonksiyonu (mesajlar korunuyor)
 function showToast(message) {
   const toastLiveExample = document.getElementById('liveToast');
   const toasttext = document.getElementById("texttoast");
@@ -179,6 +178,41 @@ function showToast(message) {
   const toast = new bootstrap.Toast(toastLiveExample);
   toast.show();
 }
+
+// Card yükleme (cardLoad.js)
+async function loadCards() {
+  try {
+    const response = await fetch('/.netlify/functions/getCards');
+    if (!response.ok) throw new Error('Veri çekilemedi');
+
+    const cards = await response.json();
+    const container = document.getElementById('icerikAlani');
+
+    cards.forEach(card => {
+      const col = document.createElement('div');
+      col.className = 'col-md-4 mb-4';
+      col.innerHTML = `
+        <div class="card" style="width: 17rem; height: 24rem;">
+          <div style="width: 100%; height:auto; display: flex; justify-content: center;">
+            <img src="${card.photo_url}" class="card-img-top" style="width: max-content; height: 12rem;" alt="...">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">${card.title}</h5>
+            <p class="card-text">${card.example}</p>
+            <a onclick="location.href='cont_edit.html?id=${card.id}'" class="btn btn-sm btn-warning">Düzenle</a>
+            <button class="btn btn-sm btn-danger" onclick="deleteCard(this)" id="adm-btn-${card.id}">Sil</button>
+          </div>
+        </div>
+      `;
+      container.appendChild(col);
+    });
+  } catch (error) {
+    console.error('Error fetching cards:', error);
+  }
+}
+
+loadCards();
+
 
   </script>
   <script src="js/cardLoad.js"></script>
