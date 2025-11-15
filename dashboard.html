@@ -167,7 +167,7 @@ async function deleteCard(delbtn) {
   };
 
   evetBtn.addEventListener('click', onConfirm, { once: true });
-  hayirBtn.addEventListener('click', () => confirmModal.hide(), { once: true });
+  hayirBtn.addEventListener('click', () => confirmModal.hide(), { once: true },showToast("Demek silmekten vazgeçtin zaten bence güzel bir içerik sonuçta sen yaptın."););
 }
 
 // Toast gösterme fonksiyonu (mesajlar korunuyor)
