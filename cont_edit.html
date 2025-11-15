@@ -120,7 +120,7 @@
 
         // 2️⃣ Dosya seçilmediyse GitHub yüklemeyi atla
         if (!file) {
-          showToast("✅ Kart güncellendi (resim değişmedi).");
+          showToast("✅ Resmi değiştirmedim tabi tabi yazılar istediğin gibi canım");
           window.location.href = "dashboard.html";
           return;
         }
@@ -136,12 +136,12 @@
             const res = await fetch('/.netlify/functions/uploadToGitHub', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ filename: fileName, content: base64, branch })
+              body: JSON.stringify({ filename: fileName, content: base64, branch, action: "upload"  })
             });
             const data = await res.json();
-            if (res.ok) showToast("✅ Kart ve resim güncellendi!"),window.location.href = "dashboard.html";
-            else showToast(`❌ Hata oluştu: ${JSON.stringify(data)}`);
-          } catch (err) { showToast(`❌ Hata: ${err.message}`); }
+            if (res.ok) showToast("✅ Resim değişti, yazılar değişti sıfır gibi resmen."),window.location.href = "dashboard.html";
+            else showToast(`❌ Hata oluştu bana gönderiver canım: ${JSON.stringify(data)}`);
+          } catch (err) { showToast(`❌ Hataaaaa: ${err.message}`); }
         };
         reader.readAsDataURL(file);
       });

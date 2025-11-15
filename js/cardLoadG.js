@@ -20,7 +20,7 @@ async function loadCards() {
               <div class="card-body">
                 <h5 class="card-title">${card.title}</h5>
                 <p class="card-text">${card.example}</p>
-                <a href="Content.html" class="btn btn-primary" >İncele</a>
+                <a href="#" class="btn btn-primary" >İncele</a>
               </div>
             </div>
           `;
