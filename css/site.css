@@ -248,3 +248,15 @@ body{
     transform: scale(1.5) translateY(-300px);
   }
 }
+
+    /* Modal ikonunu merkezle */
+    .modal-icon {
+      font-size: 50px;
+      color: #ffc107; /* Sarı uyarı rengi */
+      margin-bottom: 15px;
+    }
+
+    /* Buton arası boşluk */
+    .modal-footer .btn + .btn {
+      margin-left: 10px;
+    }

@@ -62,7 +62,31 @@
       </div>
     </div>
   </div>
-
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content text-center">
+        <div class="modal-body">
+          <div class="modal-icon">⚠️</div>
+          <h5 class="modal-title mb-3">Emin misiniz?</h5>
+          <p>Bu işlemi gerçekleştirmek istediğinize emin misiniz?</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" id="evetBtn" class="btn btn-success">Evet</button>
+          <button type="button" id="hayirBtn" class="btn btn-secondary" data-bs-dismiss="modal">Hayır</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <img src="images/profiles/sup_profile.png" style="width: 10%; height: 10%;" class="rounded me-2" alt="...">
+        <strong class="me-auto">Oğuzhan</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div id="texttoast" class="toast-body"></div>
+    </div>
+  </div>
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -104,6 +128,58 @@
 }
 
 adminLogin();
+
+async function deleteCard(delbtn) {
+  // delbtn id'sinin son kısmını alıyoruz
+  const delbtnid = delbtn.id.split('-').pop();
+
+  const btnSil = document.getElementById(delbtn.id); // HTML elementini al
+  const evetBtn = document.getElementById("evetBtn");
+  const hayirBtn = document.getElementById("hayirBtn");
+
+  // Bootstrap modal nesnesi
+  const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+
+  // Sil butonuna tıklandığında modal aç
+  btnSil.addEventListener('click', () => {
+    confirmModal.show();
+  });
+
+  // Evet butonuna tıklandığında işlem gerçekleştir
+  evetBtn.addEventListener('click', async () => {
+    confirmModal.hide();
+
+    try {
+      const response = await fetch("/.netlify/functions/deleteCards", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: delbtnid })
+      });
+
+      const data = await response.json();
+      document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+      showToast("Canım benim kartı çöpe gönderdim. Canımsın");
+    } catch (err) {
+      console.error(err);
+      showToast("Çöp kutusuna isabet ettiremedim yaaaa. Bir hata oldu bunu bana(Gerçek bana) bir iletiver.");
+    }
+  });
+
+  // Hayır butonuna tıklandığında işlem gerçekleştir
+  hayirBtn.addEventListener('click', () => {
+    confirmModal.hide();
+    showToast("Tamaaam vazgeçiyoruz zaten bence güzel bir içerik.");
+  });
+}
+
+function showToast(message) {
+  const toastLiveExample = document.getElementById('liveToast');
+  const toasttext = document.getElementById("texttoast");
+  toasttext.innerText = message;
+  const toast = new bootstrap.Toast(toastLiveExample);
+  toast.show();
+}
+
   </script>
   <script src="js/cardLoad.js"></script>
 </body>
