@@ -165,7 +165,9 @@
           const params = new URLSearchParams(window.location.search);
           const ids = parseInt(params.get("id"));
           const card = cards.find(card => card.id === ids);
-          if (!card) return;
+          if (!card) {
+            showToast("Yeni kart eklenecek");
+          }
 
           document.getElementById('cardImage').src = card.photo_url;
           document.getElementById('cardTitle').textContent = card.title;
