@@ -4,13 +4,6 @@ export const handler = async (event, context) => {
   try {
     const {photo_url, title, example} = JSON.parse(event.body);
 
-    if (!id) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'id gerekli' })
-      };
-    }
-
     const client = new Client({
       connectionString: process.env.NETLIFY_DATABASE_URL, // ENV değişkeni
       ssl: { rejectUnauthorized: false }
@@ -26,8 +19,8 @@ export const handler = async (event, context) => {
     const id = result.rows[0].id;
 
     // 2️⃣ Gerçek photo_url ile güncelle
-    const photo_urrl = `images/cards/galery_${id}.${photo_url}`;
-    await client.query('UPDATE cards SET photo_url=$1 WHERE id=$2', [photo_urrl, id]);
+    const real_photo_url = `images/cards/galery_${id}.${photo_url}`;
+    await client.query('UPDATE cards SET photo_url=$1 WHERE id=$2', [real_photo_url, id]);
 
     await client.end();
 
@@ -42,7 +35,7 @@ export const handler = async (event, context) => {
       statusCode: 200,
       body: JSON.stringify({
         message: 'Kayıt eklendi',
-        id: result.rows[0].id 
+        id: id 
       })
     };
 
