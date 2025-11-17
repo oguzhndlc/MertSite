@@ -69,6 +69,7 @@
     <script>
       const updateBtn = document.getElementById('updateBtn');
       const saveBtn = document.getElementById("saveBtn");
+      let savebtnMode;
 
       function outButton(){
         window.location.href = "dashboard.html";
@@ -97,33 +98,60 @@
         const text = document.getElementById('textInput').value;
         const fileInput = document.getElementById('imageFile');
         const params = new URLSearchParams(window.location.search);
-        const id = parseInt(params.get("id"));
+        let id = parseInt(params.get("id"));
         const file = fileInput.files[0];
         const branch = 'main';
 
-        // 1️⃣ Postgres DB Güncelle
-        try {
-          await fetch("/.netlify/functions/updateCards", {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id,
-              photo_url: file ? `images/cards/galery_${id}.${file.name.split('.').pop()}` : document.getElementById('cardImage').src,
-              title: title,
-              example: text
-            })
-          });
-        } catch (err) {
-          showToast("Kart güncellenemedi: " + err.message);
-          return;
-        }
+        if (id===0){
+          if (!file) {
+            showToast("Canım görsel eklemeyi unuttun sanırım");
+            return;
+          }else{
+              // 1️⃣ Postgres DB Veri Ekle
+            try {
+              const response = await fetch("/.netlify/functions/addCards", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  photo_url:`${file.name.split('.').pop()}`,
+                  title: title,
+                  example: text
+                })
+              });
+              const data = await response.json();
+              id = data.id; // DB’den dönen ID
+            } catch (err) {
+              showToast("Kartı ekleyemiyorum anlamadım ama gerçek halim belki anlar. İşte hata: " + err.message);
+              return;
+            }
+          }
 
-        // 2️⃣ Dosya seçilmediyse GitHub yüklemeyi atla
+        }else{
+            // 1️⃣ Postgres DB Güncelle
+          try {
+            await fetch("/.netlify/functions/updateCards", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                id,
+                photo_url: file ? `images/cards/galery_${id}.${file.name.split('.').pop()}` : document.getElementById('cardImage').src,
+                title: title,
+                example: text
+              })
+            });
+          } catch (err) {
+            showToast("Allah Allaah kart var yazı var o var bu var neden güncellenmedi bu. Neyşe işte hata: " + err.message);
+            return;
+          }
+           // 2️⃣ Dosya seçilmediyse GitHub yüklemeyi atla
         if (!file) {
-          showToast("✅ Resmi değiştirmedim tabi tabi yazılar istediğin gibi canım");
+          showToast("✅ Resmi değiştirmedim tabi tabi yazılar istediğin gibi yerleştirdim ;) canım");
           window.location.href = "dashboard.html";
           return;
         }
+        }
+
+       
 
         // 3️⃣ GitHub yükleme
         const extension = file.name.split('.').pop();
@@ -166,7 +194,8 @@
           const ids = parseInt(params.get("id"));
           const card = cards.find(card => card.id === ids);
           if (!card) {
-            showToast("Yeni kart eklenecek");
+            showToast("Ooooo yeni bir içerik demek ha hadi bakalım neler göreceğiz.");
+            saveBtn.removeEventListener('click')
           }
 
           document.getElementById('cardImage').src = card.photo_url;
