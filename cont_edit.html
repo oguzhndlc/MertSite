@@ -161,7 +161,7 @@
         reader.onload = async () => {
           const base64 = reader.result.split(',')[1];
           try {
-            const res = await fetch('/.netlify/functions/uploadToGitHub', {
+            const res = await fetch('/.netlify/functions/manageGitHub', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ filename: fileName, content: base64, branch, action: "upload"  })
@@ -195,7 +195,6 @@
           const card = cards.find(card => card.id === ids);
           if (!card) {
             showToast("Ooooo yeni bir içerik demek ha hadi bakalım neler göreceğiz.");
-            saveBtn.removeEventListener('click')
           }
 
           document.getElementById('cardImage').src = card.photo_url;
