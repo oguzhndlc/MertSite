@@ -100,15 +100,17 @@ yeniIcerikBtn.addEventListener("click", () => {
   const yeniCard = document.createElement("div");
   yeniCard.classList.add("col-md-4", "mb-4");
   yeniCard.innerHTML = `
-    <div class="card shadow-sm">
-      <img src="images/cards/galery_0.jpg" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">Yeni İçerik</h5>
-        <p class="card-text">Yeni içerik eklendi.</p>
-        <a href="cont_edit.html"  class="btn btn-sm btn-warning">Düzenle</a>
-        <button class="btn btn-sm btn-danger" onclick="deleteCard(this)" id="adm-btn-new">Sil</button>
-      </div>
-    </div>
+     <div class="card shadow-sm" style="width: 17rem; height: 24rem;>
+     <div style="width: 100%; height:auto; display: flex; justify-content: center;">
+     <img src="images/cards/galery_0.jpg" class="card-img-top" style="width: max-content; height: 12rem;" alt="...">
+     </div>
+   <div class="card-body">
+     <h5 class="card-title">Yeni İçerik</h5>
+     <p class="card-text">Yeni içerik eklendi.</p>
+     <a href="cont_edit.html"  class="btn btn-sm btn-warning">Düzenle</a>
+     <button class="btn btn-sm btn-danger" onclick="deleteCard(this)" id="adm-btn-new">Sil</button>
+   </div>
+ </div>
     
   `;
   icerikAlani.appendChild(yeniCard);
