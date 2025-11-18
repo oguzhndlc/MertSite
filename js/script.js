@@ -149,6 +149,9 @@ async function loadHeader() {
 window.addEventListener("DOMContentLoaded", loadHeader);
 
 
-
+document.addEventListener('contextmenu', function(e) {
+      e.preventDefault(); // Sağ tıklamayı engelle
+      alert("Sağ tıklama engellendi!");
+    });
 
 
