@@ -137,6 +137,10 @@ async function deleteCard(delbtn) {
   const evetBtn = document.getElementById("evetBtn");
   const hayirBtn = document.getElementById("hayirBtn");
 
+  confirmModal.addEventListener("hidden.bs.modal", () => {
+    document.activeElement.blur();
+});
+
   confirmModal.show();
 
   const onConfirm = async () => {
