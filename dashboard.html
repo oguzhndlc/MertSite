@@ -158,6 +158,10 @@ async function deleteCard(delbtn) {
 
         const data = await response.json();
         console.log("Silme yanıtı:", data);
+
+        const photo_file_path = data.deleted.photo_url;
+        const photo_file_name = photo_file_path.slice(13);
+        deleteFile(photo_file_name);
       }
 
       showToast("Canım benim kartı çöpe gönderdim. Canımsın");
@@ -182,6 +186,39 @@ function showToast(message) {
   const toast = new bootstrap.Toast(toastLiveExample);
   toast.show();
 }
+
+const deleteFile = async (filename) => {
+  const url = '/.netlify/functions/manageGitHub'; // Netlify Function URL
+  
+  const requestBody = {
+    filename: filename, // Silmek istediğiniz dosya adı
+    action: 'delete', // Silme işlemi
+    branch: 'main', // (Opsiyonel) Branch adı, varsayılan "main"
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST', // POST isteği, çünkü Netlify Function POST alır
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody), // JSON formatında veri gönder
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log("Dosya silindi:", data.message);
+    } else {
+      console.error("GitHub silme hatası:", data.body);
+      alert("Dosya silinirken bir hata oluştu.");
+    }
+  } catch (error) {
+    console.error("Hata:", error);
+    alert("Bir hata oluştu.");
+  }
+};
+
   </script>
   <script src="js/cardLoad.js"></script>
 </body>
