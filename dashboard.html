@@ -132,7 +132,7 @@ adminLogin();
 
 // Card silme fonksiyonu
 async function deleteCard(delbtn) {
-  const delbtnid = delbtn.id.split('-').pop();
+  const delbtnid = Number(delbtn.id.split('-').pop());
   const modalElement = document.getElementById('confirmModal');
   const confirmModal = new bootstrap.Modal(modalElement);
   const evetBtn = document.getElementById("evetBtn");
@@ -161,6 +161,15 @@ async function deleteCard(delbtn) {
         });
 
         const data = await response.json();
+
+        
+        // 🚨 4. ADIM: Backend yanıtını kontrol et
+        if (!data || !data.deleted) {
+          console.error("deleteCards fonksiyonundan beklenmeyen yanıt geldi:", data);
+          showToast("Silme sırasında sunucudan geçersiz bir cevap aldım canım.");
+          return; // Kod burada durur, aşağıya devam etmez
+        }
+
         const photo_file_path = data.deleted.photo_url;
         const photo_file_name = photo_file_path.slice(13);
         deleteFile(photo_file_name);

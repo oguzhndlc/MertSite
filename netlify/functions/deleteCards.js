@@ -4,12 +4,14 @@ export const handler = async (event, context) => {
   try {
     const { id } = JSON.parse(event.body);
 
-    if (!id) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'id gerekli' })
-      };
-    }
+      const parsedId = Number(id);
+  if (Number.isNaN(parsedId)) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: "Geçersiz id" })
+    };
+  }
+
 
     const client = new Client({
       connectionString: process.env.NETLIFY_DATABASE_URL, // ENV değişkeni
@@ -20,7 +22,7 @@ export const handler = async (event, context) => {
 
     const result = await client.query(
       'DELETE FROM cards WHERE id = $1 RETURNING *',
-      [id]
+      [parsedId]
     );
 
     await client.end();
