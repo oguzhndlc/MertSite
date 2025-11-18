@@ -15,7 +15,7 @@ async function loadCards() {
 
             <div class="card" style="width: 17rem; height: 24rem;">
               <div class="fullscreen-wrap" id="fsWrap" onclick="fullScreen('fsWrap')" style="width: 100%; height:auto; display: flex; justify-content: center;">
-                <img id="img-${card.id}" src="${card.photo_url}" class="card-img-top" style="width: max-content; height: max-content;" alt="...">
+                <img id="img-${card.id}" src="${card.photo_url}" class="card-img-top" style="width: max-content; height: 12rem;" alt="...">
               </div>            
               <div class="card-body">
                 <h5 class="card-title">${card.title}</h5>
