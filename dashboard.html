@@ -184,6 +184,7 @@ async function deleteCard(delbtn) {
 
   evetBtn.addEventListener('click', onConfirm, { once: true });
   hayirBtn.addEventListener('click', () => {
+    document.activeElement.blur();
     confirmModal.hide();
     showToast("Demek silmekten vazgeçtin, zaten bence güzel bir içerik sonuçta sen yaptın.");
   }, { once: true });
