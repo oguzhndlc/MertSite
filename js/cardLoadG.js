@@ -14,8 +14,8 @@ async function loadCards() {
           col.innerHTML = `
 
             <div class="card" style="width: 17rem; height: 24rem;">
-              <div style="width: 100%; height:auto; display: flex; justify-content: center;">
-                <img id="img-${card.id}" src="${card.photo_url}" class="card-img-top" style="width: max-content; height: 12rem;" alt="...">
+              <div class="fullscreen-wrap" id="fsWrap" onclick="fullScreen('fsWrap')" style="width: 100%; height:auto; display: flex; justify-content: center;">
+                <img id="img-${card.id}" src="${card.photo_url}" class="card-img-top card-img-auto" style="width: max-content; height: 12rem;" alt="...">
               </div>            
               <div class="card-body">
                 <h5 class="card-title">${card.title}</h5>

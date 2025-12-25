@@ -260,3 +260,10 @@ body{
     .modal-footer .btn + .btn {
       margin-left: 10px;
     }
+
+.card-img-auto {
+    width: 100%;
+    height: 200px; /* istediğin kart yüksekliği */
+    object-fit: contain; /* resim asla bozulmaz ve kırpılmaz */
+    background-color: #f8f9fa; /* boşlukları doldurur, istersen kaldır */
+}
