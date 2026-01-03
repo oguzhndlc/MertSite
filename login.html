@@ -165,8 +165,9 @@ body {
 </div>
 <script>
 const loginBtn = document.getElementById("loginBtn");
-loginBtn.addEventListener("keydown", function(e){
-  if(e.key==="Enter"){
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault(); 
     login();
   }
 });
