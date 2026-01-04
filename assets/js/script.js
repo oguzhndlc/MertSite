@@ -49,9 +49,9 @@ function adminLogin() {
   console.log("Giriş durumu: " + loggedIn);
 
   if (loggedIn === "true") {
-    window.location.href = "dashboard.html";
+    window.location.href = "/admin_panel/pages/dashboard.html";
   } else {
-    window.location.href = "login.html";
+    window.location.href = "/pages/login.html";
   }
 }
 
@@ -129,7 +129,7 @@ function startTypeWriter(newText) {
 ================================*/
 async function loadHeader() {
   try {
-    const response = await fetch("header.html");
+    const response = await fetch("/components/header.html");
     if (!response.ok) throw new Error("Header yüklenemedi");
 
     const data = await response.text();

@@ -1,0 +1,114 @@
+body {
+  background-color: #f8f9fa;
+}
+
+.adminTitle , .sidebar{
+    border: 0px !important;
+    background-color: #343a40;
+    color: white;
+}
+
+.adminTitle {
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+    width: 100%;
+}
+
+.adminTitle h4 {
+    padding: 20px;
+    font-size: 40px;
+    margin-bottom: 0px !important;
+}
+
+.sidebar {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.sidebar .navigation {
+    height: calc(100vh - 80px); /* header yüksekliği */
+    background-color: #343a40;
+}
+
+.sidebar .navigation a{
+    color: #adb5bd;
+    text-decoration: none;
+    display: block;
+    padding: 10px 20px;
+}
+
+.sidebar .navigation a:hover {
+    background-color: #495057;
+    color: #fff;
+}
+
+.sidebar .navigation a.active {
+  background-color: #0d6efd;
+  color: #fff;
+  font-weight: 600;
+}
+
+.sidebar .navigation a.active i {
+  color: #fff;
+}
+#pageContent {
+    background-color: #d8f9ff;
+    min-height: calc(100vh - 80px);
+}
+
+i{
+    margin-right: 10px;
+}
+.icon{
+    width: 20px;
+    height: 20px;
+    color: white !important;
+}
+
+.backHome{
+    margin-top: 300px;
+}
+
+/* Title animasyonu */
+
+.wave-text span {
+  display: inline-block;
+  color: #aefaff;
+  animation:
+    wave 1.6s ease-in-out infinite,
+    glow 2.4s ease-in-out infinite,
+    colorWave 2.4s ease-in-out infinite;
+}
+
+/* Renk Dalgası */
+@keyframes colorWave {
+  0% { color: #adb5bd; }
+  50% { color: #0d6efd; }
+  100% { color: #adb5bd; }
+}
+
+/* GLOW */
+@keyframes glow {
+  0%, 100% {
+    text-shadow:
+      0 0 4px rgba(13,110,253,0.4),
+      0 0 8px rgba(13,110,253,0.4);
+  }
+  20% {
+    text-shadow:
+      0 0 20px rgba(13,110,253,0.8),
+      0 0 40px rgba(13,110,253,0.9);
+  }
+}
+
+
+@keyframes wave {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}

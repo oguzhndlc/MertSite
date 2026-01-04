@@ -6,7 +6,7 @@
  */
 async function loadLanguage(lang) {
   try {
-    const response = await fetch(`js/${lang}.json`);
+    const response = await fetch(`/assets/lang/${lang}.json`);
     if (!response.ok)
       throw new Error(`Dil dosyası bulunamadı! HTTP status: ${response.status}`);
 
