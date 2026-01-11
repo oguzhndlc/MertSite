@@ -3,39 +3,6 @@
 /**
  * 🌈 Arka plan rengini değiştir ve localStorage'a kaydet
  */
-let btnopened = false;
-let linker;
-
-function Mertim() {
-  let renk = window.getComputedStyle(document.body).backgroundColor;
-  let yeniRenk;
-
-  if (renk === "rgb(169, 169, 202)") {
-    yeniRenk = "rgb(143, 216, 165)";
-  } else if (renk === "rgb(143, 216, 165)") {
-    yeniRenk = "rgb(238, 218, 131)";
-  } else {
-    yeniRenk = "rgb(169, 169, 202)";
-  }
-
-  document.body.style.backgroundColor = yeniRenk;
-  localStorage.setItem("arkaplanRengi", yeniRenk);
-
-  
-
-  if(yeniRenk === "rgb(143, 216, 165)" && !btnopened){
-    linker = document.createElement("a");
-    linker.onclick=adminLogin;
-    linker.textContent = "Admin";
-    linker.className="pagectrl";
-    document.getElementById("pagess").appendChild(linker);
-    console.log("Button Açıldı. Tebrikler!!!");
-    btnopened=true;
-  }else if(btnopened && yeniRenk!=="rgb(143, 216, 165)"){
-      document.getElementById("pagess").removeChild(linker);
-      btnopened=false;
-  }
-}
 
 
 
@@ -123,34 +90,4 @@ function startTypeWriter(newText) {
   yaziDiv.textContent = "";
   typeWriter();
 }
-
-/* ===============================
-   🧩 Header Yükleme & Dil Uygulama
-================================*/
-async function loadHeader() {
-  try {
-    const response = await fetch("/components/header.html");
-    if (!response.ok) throw new Error("Header yüklenemedi");
-
-    const data = await response.text();
-    document.getElementById("header-placeholder").innerHTML = data;
-
-    // Header yüklendikten sonra dili uygula
-    const currentLang = localStorage.getItem("lang") || "tr";
-    console.log(`🌍 Aktif dil: "${currentLang}"`);
-    loadLanguage(currentLang);
-
-  } catch (err) {
-    console.error("❌ Header yükleme hatası:", err);
-  }
-}
-
-// Sayfa açıldığında header'ı yükle
-window.addEventListener("DOMContentLoaded", loadHeader);
-
-
-document.addEventListener('contextmenu', function(e) {
-      e.preventDefault(); // Sağ tıklamayı engelle
-    });
-
 

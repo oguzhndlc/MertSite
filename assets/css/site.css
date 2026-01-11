@@ -1,5 +1,5 @@
 body{
-    background-color: rgb(169, 169, 202);
+    background-color: #000000;
     overflow-x: hidden;
 }
 
@@ -7,15 +7,6 @@ body{
   font-family: "Momo Trust Display", sans-serif;
   font-weight: 400;
   font-style: normal;
-}
-
-.header{
-    border-radius: 100px;
-    width: 100vw; 
-    height: 80px; 
-    background-color: azure; 
-    align-content: center;
-    display: flex;
 }
 
 .mert{
@@ -35,21 +26,6 @@ body{
     font-style: italic;
     font-family: monospace;
     white-space: pre
-}
-
-.logo{
-    display: flex; 
-    justify-content:left;
-    align-items:center;
-    border-radius: 100px;
-    height: auto;
-    width:80px ;
-    background-color: azure;
-    transition: all 1.25s ease;
-}
-
-.logo:hover{
-    width:160px;
 }
 
 .pages{
@@ -150,104 +126,6 @@ body{
     opacity: 1;
     right: 0;
   }
-
-.bodyy{
-    display: flex;
-    height: 30rem;
-    width: 100%;
-}
-.bdf{
-    justify-content:center;
-    align-items:center;
-    display: flex;
-    height: 30rem;
-    width: 20%;
-}
-
-.bdt{
-    justify-content:flex-end;
-    align-items:flex-start;
-    display: flex;
-    height: 30rem;
-    width: 20%;
-}
-
-.bdt-btn{
-  padding: 10px;
-  height: fit-content;
-  width: fit-content;
-}
-
-.bds{
-    height: 30rem;
-    width: 60%;
-}
-
-.bdsimg{
-    justify-self: center;
-    height: 25rem; 
-    width: fit-content;
-    display:flex; 
-    justify-content:center;
-    align-items:center;
-}
-
-.bdstxt{
-    height: 5rem; 
-    width: auto;
-    display:flex; 
-    justify-content:center;
-    align-items:center;
-}
-
-.mertbirresim{
-    z-index:-1;
-    position: relative;
-    border-radius: 100px;
-    transition: transform 1s linear;
-    height: 70%;
-    width: auto;
-}
-.bdsimg:hover .mertbirresim {
-    transform: rotate(360deg);
-  }
-
-.side-img {
-  position: fixed;
-  bottom: 0;
-  width: 100px;
-  opacity: 0;
-  transform: scale(0.5) translateY(0);
-  transition: none;
-  pointer-events: none;
-}
-
-.side-img.left {
-  left: 20px;
-}
-
-.side-img.right {
-  right: 20px;
-}
-
-.side-img.animate {
-  animation: floatUp 2s ease-out forwards;
-}
-
-@keyframes floatUp {
-  0% {
-    opacity: 1;
-    transform: scale(0.5) translateY(0);
-  }
-  60% {
-    opacity: 1;
-    transform: scale(1.2) translateY(-200px);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.5) translateY(-300px);
-  }
-}
 
     /* Modal ikonunu merkezle */
     .modal-icon {

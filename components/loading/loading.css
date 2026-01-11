@@ -1,0 +1,142 @@
+@font-face {
+  font-family: "Montserrat";
+  src: url("/assets/fonts/Montserrat/Montserrat-VariableFont_wght.ttf") format("ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+
+#loading-screen{
+    position: fixed;
+    inset: 0;
+    background: #0f0f0f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity .5s ease, visibility .5s ease;
+}
+
+#loading-screen.hide{
+    opacity: 0;
+    visibility: hidden;
+}
+
+
+.bodyy{
+    display: flex;
+    height: 30rem;
+    width: 100%;
+}
+.bdf{
+    justify-content:center;
+    align-items:center;
+    display: flex;
+    height: 30rem;
+    width: 20%;
+}
+
+.bdt{
+    justify-content:flex-end;
+    align-items:flex-start;
+    display: flex;
+    height: 30rem;
+    width: 20%;
+}
+
+.bdt-btn{
+  padding: 10px;
+  height: fit-content;
+  width: fit-content;
+}
+
+.bds{
+    height: 30rem;
+    width: 60%;
+}
+
+.bdsimg{
+    justify-self: center;
+    height: 25rem; 
+    width: fit-content;
+    display:flex; 
+    justify-content:center;
+    align-items:center;
+}
+
+.bdstxt{
+    height: 5rem; 
+    width: auto;
+    display:flex; 
+    justify-content:center;
+    align-items:center;
+}
+
+.mertbirresim{
+    z-index:1;
+    position: relative;
+    border-radius: 100px;
+    transition: transform 1s linear;
+    height: 70%;
+    width: auto;
+    animation: spin 1s linear infinite;
+}
+.bdsimg:hover .mertbirresim {
+    transform: rotate(360deg);
+  }
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.side-img {
+  position: fixed;
+  bottom: 0;
+  width: 100px;
+  opacity: 0;
+  transform: scale(0.5) translateY(0);
+  transition: none;
+  pointer-events: none;
+}
+
+.side-img.left {
+  left: 20px;
+}
+
+.side-img.right {
+  right: 20px;
+}
+
+.side-img.animate {
+  animation: floatUp 2s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: scale(0.5) translateY(0);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.2) translateY(-200px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5) translateY(-300px);
+  }
+}
+
+#loading-screen {
+    pointer-events: all;
+}
+
+#loading-screen.hide {
+    pointer-events: none;
+}
+
+#body-animate-text{
+  font-family: "Montserrat",serif;
+  color: white !important;
+}

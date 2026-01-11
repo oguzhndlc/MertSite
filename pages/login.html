@@ -1,138 +1,11 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Giriş</title>
 <link rel="stylesheet" href="/assets/css/bootstrap/bootstrap.min.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
-<style>
-    @import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
-
-*, *:before, *:after {
-  box-sizing: border-box;
-}
-
-body {
-  min-height: 100vh;
-  font-family: 'Raleway', sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-.containera {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.containera:hover .top:before,
-.containera:hover .top:after,
-.containera:active .top:before,
-.containera:active .top:after,
-.containera:hover .bottom:before,
-.containera:hover .bottom:after,
-.containera:active .bottom:before,
-.containera:active .bottom:after {
-  margin-left: 200px;
-  transform-origin: -200px 50%;
-  transition-delay: 0s;
-}
-
-.containera:hover .center,
-.containera:active .center {
-  opacity: 1;
-  transition-delay: 0.2s;
-}
-
-.top:before, .top:after,
-.bottom:before, .bottom:after {
-  content: '';
-  display: block;
-  position: absolute;
-  width: 200vmax;
-  height: 200vmax;
-  top: 50%;
-  left: 50%;
-  margin-top: -100vmax;
-  transform-origin: 0 50%;
-  transition: all 0.5s cubic-bezier(0.445, 0.05, 0, 1);
-  z-index: 10;
-  opacity: 0.65;
-  transition-delay: 0.2s;
-}
-
-.top:before {
-  transform: rotate(45deg);
-  background: #e46569;
-}
-
-.top:after {
-  transform: rotate(135deg);
-  background: #ecaf81;
-}
-
-.bottom:before {
-  transform: rotate(-45deg);
-  background: #60b8d4;
-}
-
-.bottom:after {
-  transform: rotate(-135deg);
-  background: #3745b5;
-}
-
-.center {
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  top: 50%;
-  left: 50%;
-  margin-left: -200px;
-  margin-top: -200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 30px;
-  opacity: 0;
-  transition: all 0.5s cubic-bezier(0.445, 0.05, 0, 1);
-  transition-delay: 0s;
-  color: #333;
-}
-
-.center input {
-  width: 100%;
-  padding: 15px;
-  margin: 5px;
-  border-radius: 1px;
-  border: 1px solid #ccc;
-  font-family: inherit;
-}
-
-/* --- Login Button --- */
-.center button {
-  width: 100%;
-  padding: 15px;
-  margin-top: 10px;
-  background: #3745b5;
-  border: none;
-  border-radius: 1px;
-  color: white;
-  font-size: 16px;
-  font-family: 'Raleway', sans-serif;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.center button:hover {
-  background: #2a3491;
-}
-
-</style>
 </head>
 <body>
 
@@ -152,75 +25,10 @@ body {
     <h2>&nbsp;</h2>
     </div>
 </div>
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-  <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
-      <img src="/assets/images/profiles/sup_profile.png" style="width: 10%; height: 10%;" class="rounded me-2" alt="...">
-      <strong class="me-auto">Oğuzhan</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div id="texttoast" class="toast-body"></div>
-  </div>
-</div>
+<script src="/assets/js/toast.js"></script>
+<script src="/components/loading/loading.js"></script>
 <script>
-const loginBtn = document.getElementById("loginBtn");
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") {
-    e.preventDefault(); 
-    login();
-  }
-});
 
-async function login() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-  try {
-    // Netlify function'dan kullanıcı verilerini çekiyoruz
-    const response = await fetch('/.netlify/functions/getData');
-    if (!response.ok) throw new Error('Veri çekilemedi');
-
-    const users = await response.json(); // Örn: [{email:"admin@example.com", password:"1234"}]
-
-    // Girilen bilgiyi kontrol et
-    const user = users.find(u => u._user_name === username && u._password === password);
-
-    if (user) {
-      // Giriş başarılı → localStorage ile durum kaydet ve admin sayfasına yönlendir
-      sessionStorage.setItem("loggedIn", "true");
-      window.location.href = "/admin_panel/pages/dashboard.html"; // admin sayfanın doğru URL'si
-    } else {
-      showToast("Kullanıcı adı veya şifreyi yanlış yazmış olabilir misin canım benim!");
-    }
-
-  } catch (error) {
-    console.error("Login sırasında hata:", error);
-    showToast("Giriş yapılırken bir hata oluştu canım benim bir daha deneyiver!"); 
-  }
-}
-
-function showToast(message) {
-        const toastLiveExample = document.getElementById('liveToast');
-        const toasttext = document.getElementById("texttoast");
-        toasttext.innerText = message;
-        const toast = new bootstrap.Toast(toastLiveExample);
-        toast.show();
-      }
-
-    function adminLogin() {
-  // Eğer daha önce hiç giriş yapılmadıysa varsayılan false ata
-  if (!sessionStorage.getItem("loggedIn")) {
-    sessionStorage.setItem("loggedIn", "false");
-  }
-
-  const loggedIn = sessionStorage.getItem("loggedIn");
-  console.log("Giriş durumu: " + loggedIn);
-
-  if (loggedIn === "true") {
-    window.location.href = "/admin_panel/pages/dashboard.html";
-  }
-}
-adminLogin();
 </script>
 
 </body>

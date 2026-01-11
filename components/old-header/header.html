@@ -1,0 +1,30 @@
+<link rel="stylesheet" href="/components/style.css">
+<div class="up-header"></div>
+<div class="header">
+    <div class="logo">
+        <img class="image" src="/assets/images/profiles/nobg_image.png" alt="">
+    </div>
+    <div class="pages" id="pagess"> 
+        <a href="/index.html" class="pagectrl" id="header-nav-1"></a>
+        <a href="/pages/gallery.html" class="pagectrl" id="header-nav-2"></a>
+        <a href="/pages/about.html" class="pagectrl" id="header-nav-3"></a>
+        <a href="/pages/contact.html" class="pagectrl" id="header-nav-4"></a>
+        <a href="/pages/privacy.html" class="pagectrl" id="header-nav-5"></a>
+        <a href="/pages/games.html" class="pagectrl" id="header-nav-6">Oyunlar</a>
+    </div>
+    <div class="hdbtn">
+        <button class="button" onclick="Mertim()"><span id="header-btn-1"></span></button>
+    </div>
+    <div class="btn-group ms-auto" style=" visibility: hidden; display: flex; align-items: center; justify-content: flex-end; flex-shrink: 0; padding: 20px;">
+        <button type="button" class="btn btn-primary" id="header-btn-2"></button>
+        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="visually-hidden">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" onclick="changeLang('tr')" href="#" id="header-btn-2-drop-1"></a></li>
+            <li><a class="dropdown-item" onclick="changeLang('en')" href="#" id="header-btn-2-drop-2"></a></li>
+            <li><a class="dropdown-item" onclick="changeLang('es')" href="#" id="header-btn-2-drop-3"></a></li>
+        </ul>
+    </div>
+</div>
+<script src="js/script.js" ></script>

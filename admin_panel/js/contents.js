@@ -3,6 +3,9 @@ const icerikAlani = document.getElementById("icerikAlani");
 const yeniIcerikBtn = document.getElementById("yeniIcerik");
 
 yeniIcerikBtn.addEventListener("click", () => {
+  yeniIcerikBtn.classList.remove("animate"); // reset
+  void yeniIcerikBtn.offsetWidth;            // RESTART trick
+  yeniIcerikBtn.classList.add("animate")
   const yeniCard = document.createElement("div");
   yeniCard.classList.add("col-md-4", "mb-4");
   yeniCard.innerHTML = `  

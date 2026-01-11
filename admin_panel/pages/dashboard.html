@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Yönetici Mert</title>
   <script src="/admin_panel/js/authGuard.js"></script>
   <script src="/admin_panel/js/loadLayout.js"></script>
   <!-- Bootstrap 5 CSS -->
@@ -11,19 +5,18 @@
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link rel="stylesheet" href="/admin_panel/css/dashboard.css">
 
-</head>
-<body>
-  <div class="container-fluid">
+  <div id="layout"></div>
+
+
+  <div class="content container-fluid">
     <div class="row">
       <!-- Sol Menü -->
-      <div id="layout"></div>
 
       <!-- İçerik Alanı -->
       <div class="col-md-9 col-lg-10 p-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 id="contTag" >İçerikler</h3>
+          <h4 id="text-center" >İçerikler</h4>
           <button class="btn btn-primary" id="yeniIcerik">Yeni İçerik Ekle</button>
-          <a href="/index.html" class="btn btn-secondary" >Anasayfaya Dön</a>
         </div>
 
         <div class="row" id="icerikAlani">
@@ -64,7 +57,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <!-- Yönetici Panel JS -->
-  <script src="/admin_panel/js/dashboard.js"></script>
   <script src="/assets/js/cardLoad.js"></script>
-</body>
-</html>
+  <script src="/assets/js/toast.js"></script>
+  <script src="/assets/js/alert.js"></script>
+  <script src="/admin_panel/js/dashboard.js"></script>

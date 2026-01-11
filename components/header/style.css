@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Momo+Trust+Display&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* ===============================
+   HEADER BASE
+================================ */
+.up-header{
+    width: 10%;
+    height: 120px;
+}
+
+.main-header{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    margin: 0 auto;
+    width: 10%;
+    height: 120px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition:
+        width 1.2s ease,
+        height .4s ease,
+        border-radius .4s ease;
+    z-index: 1000;
+}
+
+.main-header:hover{
+    width: 90%;
+}
+
+/* JS ile açılan hali */
+.main-header.active{
+    width: 90%;
+}
+
+/* logo animasyonu */
+.main-header.active .logo-image{
+    transform: rotateZ(360deg);
+    box-shadow: none;
+}
+
+/* nav görünür */
+.main-header.active .header-nav-bar{
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+}
+
+
+/* Scroll küçülme */
+.main-header.shrink{
+    height: 90px;
+    border-radius: 40px;
+}
+
+/* ===============================
+   LOGO
+================================ */
+:root{
+    --logo-shadow: 0 0 15px #fff;
+}
+
+.logo{
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+    z-index: 2;
+}
+
+.logo-image{
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 70%;
+    height: auto;
+    border-radius: 50px;
+    box-shadow: var(--logo-shadow);
+    transition: all 1.2s ease;
+}
+
+.main-header:hover .logo .logo-image{
+    transform: rotateZ(360deg);
+    box-shadow: none;
+}
+
+/* ===============================
+   NAV
+================================ */
+.header-nav-bar{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) translateX(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s ease, transform 0.6s ease;
+}
+
+.main-header:hover .header-nav-bar{
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+}
+
+.header-nav-bar ul{
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.header-nav-bar ul li{
+    margin: 0 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.header-nav-bar ul li a{
+    text-decoration: none;
+    font-size: 16px;
+    color: rgb(212, 212, 212);
+    white-space: nowrap;
+    font-weight: 500;
+
+    display: flex;
+    flex-direction: column;   /* 🔴 ÖNEMLİ */
+    align-items: center;      /* 🔴 yatay merkez */
+    justify-content: center;
+
+    gap: 6px;
+    line-height: 1;
+}
+
+
+.header-nav-bar ul li a:hover{
+    color: white;
+    text-shadow: 0 0 6px rgba(255,255,255,0.35);
+}
+
+.loginBtn{
+    color: rgb(0, 219, 0) !important;
+    font-weight: 700 !important;
+}
+
+.loginBtn:hover{
+    color: green !important;
+    text-shadow: none;
+}
+
+.header-nav-bar ul li a i{
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+    border-radius: 50%;
+
+    background-color: rgba(255,255,255,0.08);
+    transition: background-color .3s ease, transform .3s ease;
+}
+
+.header-nav-bar ul li a:hover i{
+    background-color: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+}
+
+
+.nav-text{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.loginBtn i{
+    background-color: rgba(0,219,0,0.2);
+}
+
+#themeBtn{
+    display: none;
+}
+
+/* ===============================
+   RESPONSIVE (SADECE GENİŞLİK)
+================================ */
+@media (max-width: 1100px){
+    .main-header{
+        width: 15%;
+    }
+}
+
+@media (max-width: 768px){
+    .main-header{
+        width: 20%;
+    }
+}
+
+@media (max-width: 480px){
+    .main-header{
+        width: 25%;
+    }
+    .header-nav-bar ul li a span{
+        display: none;
+    }
+    .header-nav-bar ul li{
+        margin: 0 0;
+        scale: 0.8;
+    }
+    .header-nav-bar ul{
+        margin-left: 90px;
+    }
+    #themeBtn{
+        display:flex;
+    }
+}
