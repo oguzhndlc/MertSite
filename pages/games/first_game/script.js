@@ -76,6 +76,9 @@ document.addEventListener('DOMContentLoaded', () => {
         keys.left = false;
     });
 
+    leftBtn.addEventListener("contextmenu", e => e.preventDefault());
+    rightBtn.addEventListener("contextmenu", e => e.preventDefault());
+
     // SAĞ
     rightBtn.addEventListener("touchstart", () => {
         keys.right = true;
