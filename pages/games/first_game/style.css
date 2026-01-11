@@ -52,12 +52,6 @@ body {
     touch-action: none;
 }
 
-@media (min-width: 1300px) {
-    #mobile-controls {
-        display: none;
-    }
-}
-
 #rotate-warning {
     position: fixed;
     inset: 0;
