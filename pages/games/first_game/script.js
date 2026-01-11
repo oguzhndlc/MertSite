@@ -78,6 +78,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     leftBtn.addEventListener("contextmenu", e => e.preventDefault());
     rightBtn.addEventListener("contextmenu", e => e.preventDefault());
+    [leftBtn, rightBtn].forEach(btn => {
+        btn.addEventListener("contextmenu", e => e.preventDefault());
+    });
+
+    leftBtn.addEventListener("touchcancel", () => keys.left = false);
+    rightBtn.addEventListener("touchcancel", () => keys.right = false);
+    leftBtn.addEventListener("touchmove", e => e.preventDefault());
+    rightBtn.addEventListener("touchmove", e => e.preventDefault());
+
 
     // SAĞ
     rightBtn.addEventListener("touchstart", () => {

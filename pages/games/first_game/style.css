@@ -58,6 +58,17 @@ body {
   outline: none;
 }
 
+#btn-left, #btn-right {
+  -webkit-user-select: none;   /* Safari / Chrome */
+  -ms-user-select: none;       /* IE10+ */
+  user-select: none;           /* modern tarayıcılar */
+  
+  -webkit-touch-callout: none; /* iOS Safari: uzun basınca menü çıkmasın */
+  touch-action: none;          /* dokunmayı oyun kontrollerine bırak */
+  
+  outline: none;
+}
+
 
 #rotate-warning {
     position: fixed;
