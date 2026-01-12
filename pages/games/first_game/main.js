@@ -1,21 +1,29 @@
 import Phaser from "phaser";
-import MenuScene from "./scenes/MenuScene.js";
-import GameScene from "./scenes/GameScene.js";
 
 const config = {
   type: Phaser.AUTO,
-  width: window.innerWidth,
-  height: window.innerHeight,
-  parent: "game-container",
-  scale: {
-    mode: Phaser.Scale.RESIZE,
-    autoCenter: Phaser.Scale.CENTER_BOTH
-  },
-  scene: [MenuScene, GameScene]
+  width: 800,
+  height: 600,
+  scene: {
+    preload,
+    create,
+    update
+  }
 };
 
-const game = new Phaser.Game(config);
+function preload() {
+  this.load.image('sky', '/assets/game_background.jpg');
+}
 
-window.addEventListener("resize", () => {
-  game.scale.resize(window.innerWidth, window.innerHeight);
-});
+function create() {
+  this.add.image(400, 300, 'sky');
+  this.input.once('pointerdown', () => {
+    if (!this.scale.isFullscreen) {
+      this.scale.startFullscreen();
+    }
+  });
+}
+
+function update() {}
+
+export default new Phaser.Game(config);
