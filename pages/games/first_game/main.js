@@ -1,3 +1,4 @@
+// main.js
 import Phaser from "phaser";
 
 const config = {
@@ -17,11 +18,6 @@ function preload() {
 
 function create() {
   this.add.image(400, 300, 'sky');
-  this.input.once('pointerdown', () => {
-    if (!this.scale.isFullscreen) {
-      this.scale.startFullscreen();
-    }
-  });
 }
 
 function update() {}
