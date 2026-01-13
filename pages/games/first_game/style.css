@@ -76,6 +76,17 @@ body {
   outline: none;
 }
 
+#btn-left{
+    transform: rotateZ(-90deg) !important; 
+    scale: 1.5;
+    margin-left: 50px;
+}
+
+#btn-right{
+    transform: rotateZ(90deg) !important; 
+    scale: 1.5;
+    margin-right: 50px;
+}
 
 #rotate-warning {
     position: fixed;

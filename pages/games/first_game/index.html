@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="title"> Oyun Bir </title>
+    <title>Oyun Bir</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
 </head>
-
 <body>
     <div id="header-placeholder"></div>
 
@@ -15,15 +14,14 @@
     </div>
 
     <div id="mobile-controls">
-        <button id="btn-left">◀</button>
-        <button id="btn-right">▶</button>
+        <button id="btn-left"><i class="bi bi-triangle-fill"></i></button>
+        <button id="btn-right"><i class="bi bi-triangle-fill"></i></button>
     </div>
 
     <div id="game-container"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
     <script src="/components/loading/loading.js"></script>
     <script src="/components/header/loadHeader.js"></script>
-    <script src="/assets/js/main.js"></script>
+    <script type="module" src="game.js"></script>
 </body>
 </html>
