@@ -1,5 +1,4 @@
 // main.js
-import Phaser from "phaser";
 
 const config = {
   type: Phaser.AUTO,
@@ -10,37 +9,21 @@ const config = {
     preload,
     create,
     update
-  },
-  scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH
   }
 };
 
 function preload() {
-  this.load.image('sky', '/assets/game_background.jpg');
+  this.load.image("logo", "assets/logo.png"); // Örnek
 }
 
 function create() {
-  this.add.image(this.cameras.main.width/2, this.cameras.main.height/2, 'sky');
+  this.add.image(window.innerWidth/2, window.innerHeight/2, "logo");
 
-  // Tam ekran başlatma
+  // Tam ekran başlangıç (ilk tıklamada)
   this.input.once('pointerdown', () => {
     if (!this.scale.isFullscreen) {
       this.scale.startFullscreen();
     }
-  });
-
-  // Başlat butonu
-  const startText = this.add.text(this.cameras.main.width/2, this.cameras.main.height/2, 'BAŞLAT', {
-    font: '48px Arial',
-    fill: '#ffffff'
-  }).setOrigin(0.5);
-
-  startText.setInteractive();
-  startText.on('pointerdown', () => {
-    startText.destroy();
-    this.scene.start('gameScene'); // Eğer oyun sahnesine geçmek istersen
   });
 }
 
