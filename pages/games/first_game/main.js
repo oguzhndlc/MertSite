@@ -1,32 +1,23 @@
-// main.js
+import Phaser from "phaser";
+import GameScene from "./scenes/GameScene.js";
 
 const config = {
-  type: Phaser.AUTO,
-  width: window.innerWidth,
-  height: window.innerHeight,
-  parent: "game-container",
-  scene: {
-    preload,
-    create,
-    update
-  }
+  type: Phaser.AUTO,                 // WebGL varsa WebGL, yoksa Canvas
+  width: window.innerWidth,           // Ekran genişliği
+  height: window.innerHeight,         // Ekran yüksekliği
+  parent: "game-container",           // HTML içindeki div id
+  backgroundColor: "#000000",         // Siyah arka plan
+  scale: {
+    mode: Phaser.Scale.RESIZE,        // Otomatik boyutlandırma
+    autoCenter: Phaser.Scale.CENTER_BOTH
+  },
+  scene: [GameScene]                  // Yüklenecek sahne
 };
 
-function preload() {
-  this.load.image("logo", "assets/logo.png"); // Örnek
-}
+// Yeni Phaser oyunu oluştur
+const game = new Phaser.Game(config);
 
-function create() {
-  this.add.image(window.innerWidth/2, window.innerHeight/2, "logo");
-
-  // Tam ekran başlangıç (ilk tıklamada)
-  this.input.once('pointerdown', () => {
-    if (!this.scale.isFullscreen) {
-      this.scale.startFullscreen();
-    }
-  });
-}
-
-function update() {}
-
-new Phaser.Game(config);
+// Fullscreen / Mobil dokunma için basit örnek
+window.addEventListener("resize", () => {
+  game.scale.resize(window.innerWidth, window.innerHeight);
+});

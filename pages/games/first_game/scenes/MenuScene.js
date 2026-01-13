@@ -28,7 +28,13 @@ export default class MenuScene extends Phaser.Scene {
 
     // Tıklama olayı
     startButton.on("pointerdown", () => {
-      this.scene.start("GameScene"); // GameScene'e geç
+      // 1️⃣ Tam ekran yap
+      if (!this.scale.isFullscreen) {
+        this.scale.startFullscreen();
+      }
+
+      // 2️⃣ Oyun sahnesine geç
+      this.scene.start("GameScene");
     });
   }
 }

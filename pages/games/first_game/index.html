@@ -9,16 +9,21 @@
 
 <body>
     <div id="header-placeholder"></div>
-    <!-- LOADING BURADA ENJEKTE EDİLİR -->
+
+    <div id="rotate-warning">
+        <p>📱 Lütfen telefonu yatay çevir</p>
+    </div>
+
+    <div id="mobile-controls">
+        <button id="btn-left">◀</button>
+        <button id="btn-right">▶</button>
+    </div>
+
     <div id="game-container"></div>
 
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
     <script src="/components/loading/loading.js"></script>
-    <script src="/assets/js/script.js"></script>
     <script src="/components/header/loadHeader.js"></script>
-    <!-- first_game/index.html -->
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.min.js"></script>
-    <script src="main.js"></script>
-
+    <script src="/assets/js/main.js"></script>
 </body>
-
 </html>
