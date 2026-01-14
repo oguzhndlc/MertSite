@@ -51,9 +51,9 @@ function initHeaderShrink() {
    TEMALAR
 ================================ */
 const themes = [
-  { name: "dark", bg: "rgb(0, 0, 0)", nav: "#fff" ,glow:"#fff"},
-  { name: "gray", bg: "rgb(130, 130, 130)", nav: "#fff" ,glow:"#fff"},
-  { name: "light", bg: "rgb(250, 250, 250)", nav: "#000" ,glow:"#000"}
+  { name: "dark", bg: "rgb(0, 0, 0)", nav: "#fff", glow: "#fff" },
+  { name: "gray", bg: "rgb(130, 130, 130)", nav: "#fff", glow: "#fff" },
+  { name: "light", bg: "rgb(250, 250, 250)", nav: "#000", glow: "#000" }
 ];
 
 function changeTheme() {
@@ -66,7 +66,7 @@ function changeTheme() {
   document.querySelectorAll(".nav").forEach(el => {
     el.style.color = next.nav;
   });
-  
+
   setLogoShadow(next.glow);
 
   localStorage.setItem("theme", next.name);
@@ -85,7 +85,7 @@ function loadSavedTheme() {
     el.style.color = theme.nav;
   });
 
-   setLogoShadow(theme.glow);
+  setLogoShadow(theme.glow);
 }
 
 function setLogoShadow(color) {
@@ -103,10 +103,25 @@ function setLogoShadow(color) {
   loadSavedTheme();
 
   const logo = document.getElementById("logoBox");
-  const themeBtn =document.getElementById("themeBtn");
-  if (getComputedStyle(themeBtn).display !== "none"){
+  const themeBtn = document.getElementById("themeBtn");
+  if (getComputedStyle(themeBtn).display !== "none") {
     themeBtn.addEventListener("click", changeTheme);
-  } else{
+  } else {
     logo.addEventListener("click", changeTheme);
   }
 })();
+
+const nav = document.querySelector(".header-nav-bar");
+
+header.addEventListener("transitionend", (e) => {
+  // Sadece width animasyonu bittiğinde çalışsın
+  if (e.propertyName === "width") {
+    header.classList.add("nav-ready");
+  }
+});
+
+// Hover çıkınca tekrar kilitle
+header.addEventListener("mouseleave", () => {
+  header.classList.remove("nav-ready");
+});
+

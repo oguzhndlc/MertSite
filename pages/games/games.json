@@ -1,17 +1,20 @@
 [
   {
+    "name":"platformer",
     "link": "/pages/games/first_game/index.html",
     "cover": "/assets/images/game_cards/deneme-cover.jpg",
     "title": "/assets/images/game_cards/deneme-title.png",
     "character": "/assets/images/game_cards/deneme-character.webp"
   },
   {
+    "name":"the-dark-rider",
     "link": "https://www.mythrillfiction.com/the-dark-rider",
     "cover": "https://ggayane.github.io/css-experiments/cards/dark_rider-cover.jpg",
     "title": "https://ggayane.github.io/css-experiments/cards/dark_rider-title.png",
     "character": "https://ggayane.github.io/css-experiments/cards/dark_rider-character.webp"
   },
   {
+    "name":"force-mage",
     "link": "https://www.mythrillfiction.com/force-mage",
     "cover": "https://ggayane.github.io/css-experiments/cards/force_mage-cover.jpg",
     "title": "https://ggayane.github.io/css-experiments/cards/force_mage-title.png",

@@ -4,7 +4,7 @@ function cardLoad(game){
 gamesList.innerHTML+=`<li><a href="${game.link}">
   <div class="myth-card">
     <div class="myth-wrapper">
-      <img src="${game.cover}" class="myth-cover-image" />
+      <img src="${game.cover}" class="myth-cover-image"alt="${game.name}" />
     </div>
     <img src="${game.title}" class="myth-title" />
     <img src="${game.character}" class="myth-character" />

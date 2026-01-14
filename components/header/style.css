@@ -3,12 +3,12 @@
 /* ===============================
    HEADER BASE
 ================================ */
-.up-header{
+.up-header {
     width: 10%;
     height: 120px;
 }
 
-.main-header{
+.main-header {
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     margin: 0 auto;
@@ -29,23 +29,23 @@
     z-index: 1000;
 }
 
-.main-header:hover{
+.main-header:hover {
     width: 90%;
 }
 
 /* JS ile açılan hali */
-.main-header.active{
+.main-header.active {
     width: 90%;
 }
 
 /* logo animasyonu */
-.main-header.active .logo-image{
+.main-header.active .logo-image {
     transform: rotateZ(360deg);
     box-shadow: none;
 }
 
 /* nav görünür */
-.main-header.active .header-nav-bar{
+.main-header.active .header-nav-bar {
     opacity: 1;
     transform: translate(-50%, -50%);
     pointer-events: auto;
@@ -53,7 +53,7 @@
 
 
 /* Scroll küçülme */
-.main-header.shrink{
+.main-header.shrink {
     height: 90px;
     border-radius: 40px;
 }
@@ -61,18 +61,18 @@
 /* ===============================
    LOGO
 ================================ */
-:root{
+:root {
     --logo-shadow: 0 0 15px #fff;
 }
 
-.logo{
+.logo {
     height: 100%;
     aspect-ratio: 1 / 1;
     flex-shrink: 0;
     z-index: 2;
 }
 
-.logo-image{
+.logo-image {
     margin-top: 20px;
     margin-left: 20px;
     width: 70%;
@@ -82,7 +82,7 @@
     transition: all 1.2s ease;
 }
 
-.main-header:hover .logo .logo-image{
+.main-header:hover .logo .logo-image {
     transform: rotateZ(360deg);
     box-shadow: none;
 }
@@ -90,7 +90,7 @@
 /* ===============================
    NAV
 ================================ */
-.header-nav-bar{
+.header-nav-bar {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -100,13 +100,21 @@
     transition: opacity 1s ease, transform 0.6s ease;
 }
 
-.main-header:hover .header-nav-bar{
+.main-header:hover .header-nav-bar,
+.main-header.active .header-nav-bar {
     opacity: 1;
     transform: translate(-50%, -50%);
+}
+
+.header-nav-bar {
+    pointer-events: none;
+}
+
+.main-header.nav-ready .header-nav-bar {
     pointer-events: auto;
 }
 
-.header-nav-bar ul{
+.header-nav-bar ul {
     display: flex;
     align-items: center;
     list-style: none;
@@ -114,13 +122,13 @@
     margin: 0;
 }
 
-.header-nav-bar ul li{
+.header-nav-bar ul li {
     margin: 0 20px;
     display: flex;
     justify-content: center;
 }
 
-.header-nav-bar ul li a{
+.header-nav-bar ul li a {
     text-decoration: none;
     font-size: 16px;
     color: rgb(212, 212, 212);
@@ -128,8 +136,10 @@
     font-weight: 500;
 
     display: flex;
-    flex-direction: column;   /* 🔴 ÖNEMLİ */
-    align-items: center;      /* 🔴 yatay merkez */
+    flex-direction: column;
+    /* 🔴 ÖNEMLİ */
+    align-items: center;
+    /* 🔴 yatay merkez */
     justify-content: center;
 
     gap: 6px;
@@ -137,22 +147,22 @@
 }
 
 
-.header-nav-bar ul li a:hover{
+.header-nav-bar ul li a:hover {
     color: white;
-    text-shadow: 0 0 6px rgba(255,255,255,0.35);
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.35);
 }
 
-.loginBtn{
+.loginBtn {
     color: rgb(0, 219, 0) !important;
     font-weight: 700 !important;
 }
 
-.loginBtn:hover{
+.loginBtn:hover {
     color: green !important;
     text-shadow: none;
 }
 
-.header-nav-bar ul li a i{
+.header-nav-bar ul li a i {
     width: 44px;
     height: 44px;
 
@@ -163,59 +173,76 @@
     font-size: 22px;
     border-radius: 50%;
 
-    background-color: rgba(255,255,255,0.08);
+    background-color: rgba(255, 255, 255, 0.08);
     transition: background-color .3s ease, transform .3s ease;
 }
 
-.header-nav-bar ul li a:hover i{
-    background-color: rgba(255,255,255,0.2);
+.header-nav-bar ul li a:hover i {
+    background-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
 }
 
 
-.nav-text{
+.nav-text {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.loginBtn i{
-    background-color: rgba(0,219,0,0.2);
+
+.loginBtn i {
+    background-color: rgba(0, 219, 0, 0.2);
 }
 
-#themeBtn{
+#themeBtn {
     display: none;
 }
 
 /* ===============================
    RESPONSIVE (SADECE GENİŞLİK)
 ================================ */
-@media (max-width: 1100px){
-    .main-header{
+@media (max-width: 1100px) {
+    .main-header {
         width: 15%;
     }
 }
 
-@media (max-width: 768px){
-    .main-header{
+@media (max-width: 768px) {
+    .main-header {
         width: 20%;
     }
-}
 
-@media (max-width: 480px){
-    .main-header{
-        width: 25%;
-    }
-    .header-nav-bar ul li a span{
-        display: none;
-    }
-    .header-nav-bar ul li{
+    .header-nav-bar ul li {
         margin: 0 0;
         scale: 0.8;
     }
-    .header-nav-bar ul{
+}
+
+@media (max-width: 580px) {
+    .main-header {
+        width: 30%;
+        height: 90px;
+        left: 50%;
+    }
+
+    .logo {
+
+        margin-bottom: 10px;
+    }
+
+    .header-nav-bar ul li a span {
+        display: none;
+    }
+
+    .header-nav-bar ul li {
+        margin: 0 0;
+        scale: 0.8;
+    }
+
+    .header-nav-bar ul {
         margin-left: 90px;
     }
-    #themeBtn{
-        display:flex;
+
+    #themeBtn {
+        display: flex;
     }
 }
