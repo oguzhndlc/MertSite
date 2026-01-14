@@ -228,6 +228,9 @@
 
         margin-bottom: 10px;
     }
+    .header-nav-bar ul li a{
+        gap: 0;
+    }
 
     .header-nav-bar ul li a span {
         display: none;
