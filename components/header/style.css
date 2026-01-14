@@ -230,6 +230,7 @@
     }
     .header-nav-bar ul li a{
         gap: 0;
+        background-color: aqua;
     }
 
     .header-nav-bar ul li a span {
