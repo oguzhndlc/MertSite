@@ -228,13 +228,15 @@
 
         margin-bottom: 10px;
     }
-    .header-nav-bar ul li a{
-        gap: 0;
-        background-color: aqua;
-    }
 
     .header-nav-bar ul li a span {
         display: none;
+    }
+
+    .header-nav-bar ul li a i {
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
     }
 
     .header-nav-bar ul li {
