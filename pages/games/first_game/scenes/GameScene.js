@@ -5,9 +5,14 @@ export default class GameScene extends Phaser.Scene {
     ground;
     jumpTimer = 0;
     jumpHoldTime = 500;
-    bgMusic;        // arkaplan müziği
-    escKey;         // geri tuşu
-    bg;             // sonsuz arkaplan için tileSprite
+    bgMusic;
+    escKey;
+    bg;
+    arrow;
+
+    arrowFrame = 0;
+    arrowFrameTimer = 0;
+    arrowFrameDelay = 125; // 8 FPS
 
     constructor() {
         super('GameScene');
@@ -16,6 +21,11 @@ export default class GameScene extends Phaser.Scene {
     preload() {
         const basePath = '/pages/games/first_game/assets/';
         this.load.image('bg', basePath + 'images/game_background.jpg');
+
+        this.load.spritesheet('arrow', basePath + 'images/arrow.png', {
+            frameWidth: 128,
+            frameHeight: 128
+        });
 
         this.load.spritesheet('player', basePath + 'images/player.png', {
             frameWidth: 32,
@@ -29,29 +39,47 @@ export default class GameScene extends Phaser.Scene {
         const width = this.scale.width;
         const height = this.scale.height;
 
-        // TILESPRITE ARKAPLAN (resmin kendi boyutunu kullan, sol üstten başlat)
-        this.bg = this.add.tileSprite(0, 0, width, this.textures.get('bg').getSourceImage().height, 'bg');
+        /* ================= BACKGROUND ================= */
+        this.bg = this.add.tileSprite(
+            0,
+            0,
+            width,
+            this.textures.get('bg').getSourceImage().height,
+            'bg'
+        );
         this.bg.setOrigin(0, 0);
-        this.bg.setScale(height / this.textures.get('bg').getSourceImage().height); 
-        // resmi ekran yüksekliğine göre ölçekledik, yatay tekrar yapılacak
+        this.bg.setScale(height / this.textures.get('bg').getSourceImage().height);
 
-        // klavye
+        /* ================= ARROW TILE ================= */
+        this.arrow = this.add.tileSprite(
+            0,
+            0,
+            width,
+            128,
+            'arrow',
+            0
+        );
+        this.arrow.setOrigin(0, 0);
+        this.arrow.setScale(height / 128);
+
+        /* ================= INPUT ================= */
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        // geri tuşu (ESC)
-        this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+        this.escKey = this.input.keyboard.addKey(
+            Phaser.Input.Keyboard.KeyCodes.ESC
+        );
         this.escKey.on('down', () => {
             if (this.bgMusic) this.bgMusic.stop();
             this.scene.start('MenuScene');
         });
 
-        // zemin (görünmez)
+        /* ================= GROUND ================= */
         this.ground = this.physics.add.staticGroup();
         this.ground.create(width / 2, height - 100, null)
             .setSize(width, 50)
             .setVisible(false);
 
-        // oyuncu
+        /* ================= PLAYER ================= */
         this.player = this.physics.add.sprite(width / 2, height / 2, 'player');
         this.player.setCollideWorldBounds(true);
         this.player.body.setGravityY(500);
@@ -59,32 +87,38 @@ export default class GameScene extends Phaser.Scene {
 
         this.physics.add.collider(this.player, this.ground);
 
-        // animasyonlar
+        /* ================= PLAYER ANIMS ================= */
         this.anims.create({
             key: 'idle',
             frames: this.anims.generateFrameNumbers('player', { start: 0, end: 12 }),
             frameRate: 10,
             repeat: -1
         });
+
         this.anims.create({
             key: 'run',
             frames: this.anims.generateFrameNumbers('player', { start: 13, end: 20 }),
             frameRate: 10,
             repeat: -1
         });
+
         this.anims.create({
             key: 'jump',
             frames: this.anims.generateFrameNumbers('player', { start: 65, end: 70 }),
-            frameRate: 10,
+            frameRate: 10
         });
+
         this.anims.create({
             key: 'fastfall',
             frames: this.anims.generateFrameNumbers('player', { start: 79, end: 81 }),
-            frameRate: 10,
+            frameRate: 10
         });
 
-        // arkaplan müziğini başlat
-        this.bgMusic = this.sound.add('bgMusic', { loop: true, volume: 0.5 });
+        /* ================= MUSIC ================= */
+        this.bgMusic = this.sound.add('bgMusic', {
+            loop: true,
+            volume: 0.5
+        });
         this.bgMusic.play();
     }
 
@@ -92,7 +126,7 @@ export default class GameScene extends Phaser.Scene {
         const player = this.player;
         const cursors = this.cursors;
 
-        // sağ - sol hareket
+        /* ================= PLAYER MOVE ================= */
         if (cursors.left.isDown) {
             player.setVelocityX(-200);
             player.flipX = true;
@@ -106,7 +140,7 @@ export default class GameScene extends Phaser.Scene {
             if (player.body.blocked.down) player.anims.play('idle', true);
         }
 
-        // zıplama basılı tutma
+        /* ================= JUMP ================= */
         if (cursors.up.isDown && player.body.blocked.down) {
             player.setVelocityY(-300);
             this.jumpTimer = this.jumpHoldTime;
@@ -122,7 +156,7 @@ export default class GameScene extends Phaser.Scene {
             this.jumpTimer = 0;
         }
 
-        // fast fall
+        /* ================= FAST FALL ================= */
         if (cursors.down.isDown && !player.body.blocked.down) {
             player.setVelocityY(1000);
             player.anims.play('fastfall', true);
@@ -132,7 +166,18 @@ export default class GameScene extends Phaser.Scene {
             player.anims.play('jump', true);
         }
 
-        // SONSUZ ARKAPLAN HAREKETİ (yalnızca yatay)
+        /* ================= BACKGROUND SCROLL ================= */
         this.bg.tilePositionX += player.body.velocity.x * delta / 1000;
+
+        /* ================= ARROW SCROLL ================= */
+        this.arrow.tilePositionX -= 200 * delta / 1000;
+
+        /* ================= ARROW FRAME ANIMATION ================= */
+        this.arrowFrameTimer += delta;
+        if (this.arrowFrameTimer >= this.arrowFrameDelay) {
+            this.arrowFrame = (this.arrowFrame + 1) % 6;
+            this.arrow.setFrame(this.arrowFrame);
+            this.arrowFrameTimer = 0;
+        }
     }
 }
