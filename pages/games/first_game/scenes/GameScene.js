@@ -1,18 +1,17 @@
 // GameScene.js
 export default class GameScene extends Phaser.Scene {
+    constructor() {
+        super('GameScene');
+    }
+
     player;
     cursors;
     ground;
-    jumpTimer = 0;
-    jumpHoldTime = 500;
-    bgMusic;
-    escKey;
     bg;
     arrow;
+    bgMusic;
 
-    arrowFrame = 0;
-    arrowFrameTimer = 0;
-    arrowFrameDelay = 125;
+    isPortrait = false;
 
     mobileInput = {
         left: false,
@@ -21,98 +20,74 @@ export default class GameScene extends Phaser.Scene {
         down: false
     };
 
-    isPortrait = false;
+    arrowFrame = 0;
+    arrowFrameTimer = 0;
+    arrowFrameDelay = 125;
 
-    constructor() {
-        super('GameScene');
-    }
+    jumpTimer = 0;
+    jumpHoldTime = 500;
 
     preload() {
         const basePath = '/pages/games/first_game/assets/';
         this.load.image('bg', basePath + 'images/game_background.jpg');
-
         this.load.spritesheet('arrow', basePath + 'images/arrow.png', {
             frameWidth: 128,
             frameHeight: 128
         });
-
         this.load.spritesheet('player', basePath + 'images/player.png', {
             frameWidth: 32,
             frameHeight: 32
         });
-
         this.load.audio('bgMusic', basePath + 'music/game_background.mp3');
     }
 
     create() {
-        const width = this.scale.width;
-        const height = this.scale.height;
+        const w = this.scale.width;
+        const h = this.scale.height;
 
-        /* ===== MULTI TOUCH ===== */
+        /* MULTI TOUCH */
         this.input.addPointer(3);
 
-        /* ===== ORIENTATION LOCK (ANDROID) ===== */
-        if (
-            this.scale.isFullscreen &&
-            screen.orientation?.lock &&
-            !this.sys.game.device.os.iOS
-        ) {
-            screen.orientation.lock('landscape').catch(() => {});
-        }
-
-        /* ===== BACKGROUND ===== */
+        /* BACKGROUND */
         const bgImg = this.textures.get('bg').getSourceImage();
-        this.bg = this.add.tileSprite(0, 0, width, bgImg.height, 'bg')
-            .setOrigin(0, 0)
-            .setScale(height / bgImg.height);
+        this.bg = this.add.tileSprite(0, 0, w, bgImg.height, 'bg')
+            .setOrigin(0)
+            .setScale(h / bgImg.height);
 
-        /* ===== ARROW ===== */
-        this.arrow = this.add.tileSprite(0, 0, width, 128, 'arrow', 0)
-            .setOrigin(0, 0)
-            .setScale(height / 128);
+        /* ARROW */
+        this.arrow = this.add.tileSprite(0, 0, w, 128, 'arrow')
+            .setOrigin(0)
+            .setScale(h / 128);
 
-        /* ===== ROTATE OVERLAY ===== */
-        this.rotateOverlay = this.add.text(
-            width / 2,
-            height / 2,
+        /* ROTATE OVERLAY */
+        this.rotateOverlay = this.add.rectangle(
+            w / 2, h / 2, w, h, 0x000000, 0.85
+        ).setDepth(1000).setVisible(false);
+
+        this.rotateText = this.add.text(
+            w / 2, h / 2,
             'Lütfen telefonu yan çevirin',
-            {
-                fontSize: '28px',
-                backgroundColor: '#000',
-                color: '#fff',
-                padding: { x: 20, y: 10 }
-            }
-        )
-        .setOrigin(0.5)
-        .setDepth(1000)
-        .setVisible(false);
+            { fontSize: '32px', color: '#ffffff' }
+        ).setOrigin(0.5).setDepth(1001).setVisible(false);
 
-        /* ===== INPUT ===== */
+        /* INPUT */
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        this.escKey = this.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.ESC
-        );
-        this.escKey.on('down', () => {
-            if (this.bgMusic) this.bgMusic.stop();
-            this.scene.start('MenuScene');
-        });
-
-        /* ===== GROUND ===== */
+        /* GROUND */
         this.ground = this.physics.add.staticGroup();
-        this.ground.create(width / 2, height - 100, null)
-            .setSize(width, 50)
+        this.ground.create(w / 2, h - 100)
+            .setSize(w, 50)
             .setVisible(false);
 
-        /* ===== PLAYER ===== */
-        this.player = this.physics.add.sprite(width / 2, height / 2, 'player');
-        this.player.setCollideWorldBounds(true);
+        /* PLAYER */
+        this.player = this.physics.add.sprite(w / 2, h / 2, 'player')
+            .setScale(5)
+            .setCollideWorldBounds(true);
         this.player.body.setGravityY(500);
-        this.player.setScale(5);
 
         this.physics.add.collider(this.player, this.ground);
 
-        /* ===== ANIMS ===== */
+        /* ANIMS */
         this.anims.create({
             key: 'idle',
             frames: this.anims.generateFrameNumbers('player', { start: 0, end: 12 }),
@@ -139,57 +114,32 @@ export default class GameScene extends Phaser.Scene {
             frameRate: 10
         });
 
-        /* ===== MUSIC ===== */
-        this.bgMusic = this.sound.add('bgMusic', {
-            loop: true,
-            volume: 0.5
-        });
+        /* MUSIC */
+        this.bgMusic = this.sound.add('bgMusic', { loop: true, volume: 0.5 });
         this.bgMusic.play();
 
-        /* ===== MOBILE CONTROLS ===== */
+        /* MOBILE CONTROLS */
         this.createMobileControls();
 
-        /* ===== RESIZE / ORIENTATION ===== */
-        this.scale.on('resize', (gameSize) => {
-            const w = gameSize.width;
-            const h = gameSize.height;
+        /* ORIENTATION */
+        this.scale.on('resize', this.checkOrientation, this);
+        this.checkOrientation(this.scale.gameSize);
+    }
 
-            this.isPortrait = h > w;
+    checkOrientation(gameSize) {
+        const { width, height } = gameSize;
+        this.isPortrait = height > width;
 
-            this.rotateOverlay
-                .setVisible(this.isPortrait)
-                .setPosition(w / 2, h / 2);
+        this.rotateOverlay
+            .setVisible(this.isPortrait)
+            .setPosition(width / 2, height / 2)
+            .setSize(width, height);
 
-            if (this.isPortrait) {
-                // OYUNU TAMAMEN DURDUR
-                this.scene.pause();
-                this.cameras.main.setVisible(false);
-                this.input.enabled = false;
-                this.sound.pauseAll();
-                return;
-            }
+        this.rotateText
+            .setVisible(this.isPortrait)
+            .setPosition(width / 2, height / 2);
 
-            // LANDSCAPE → DEVAM
-            this.scene.resume();
-            this.cameras.main.setVisible(true);
-            this.input.enabled = true;
-            this.sound.resumeAll();
-
-            this.cameras.resize(w, h);
-
-            this.bg.setSize(w, this.bg.height);
-            this.bg.setScale(h / bgImg.height);
-
-            this.arrow.setSize(w, 128);
-            this.arrow.setScale(h / 128);
-
-            this.ground.clear(true, true);
-            this.ground.create(w / 2, h - 100, null)
-                .setSize(w, 50)
-                .setVisible(false);
-
-            this.player.setPosition(w / 2, h / 2);
-        });
+        this.input.enabled = !this.isPortrait;
     }
 
     createMobileControls() {
@@ -198,7 +148,7 @@ export default class GameScene extends Phaser.Scene {
         const w = this.scale.width;
         const h = this.scale.height;
 
-        const makeBtn = (x, y, txt) =>
+        const btn = (x, y, txt) =>
             this.add.text(x, y, txt, {
                 fontSize: '32px',
                 backgroundColor: '#000000aa',
@@ -209,10 +159,10 @@ export default class GameScene extends Phaser.Scene {
             .setScrollFactor(0)
             .setInteractive();
 
-        const left = makeBtn(40, h - 120, '◀');
-        const right = makeBtn(140, h - 120, '▶');
-        const jump = makeBtn(w - 140, h - 120, '⬆');
-        const down = makeBtn(w - 140, h - 60, '⬇');
+        const left = btn(40, h - 120, '◀');
+        const right = btn(140, h - 120, '▶');
+        const jump = btn(w - 140, h - 120, '⬆');
+        const down = btn(w - 140, h - 60, '⬇');
 
         left.on('pointerdown', () => this.mobileInput.left = true);
         left.on('pointerup', () => this.mobileInput.left = false);
@@ -262,19 +212,12 @@ export default class GameScene extends Phaser.Scene {
         }
 
         if (up && this.jumpTimer > 0) {
-            p.setVelocityY(-300);
             this.jumpTimer -= delta;
-        } else {
-            this.jumpTimer = 0;
         }
 
         if (down && !p.body.blocked.down) {
             p.setVelocityY(1000);
             p.anims.play('fastfall', true);
-        }
-
-        if (!p.body.blocked.down && !down) {
-            p.anims.play('jump', true);
         }
 
         this.bg.tilePositionX += p.body.velocity.x * delta / 1000;

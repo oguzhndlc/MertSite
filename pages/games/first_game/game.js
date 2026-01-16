@@ -1,26 +1,17 @@
 import MenuScene from './scenes/MenuScene.js';
 import GameScene from './scenes/GameScene.js';
 
-const width = window.innerWidth;
-const height = window.innerHeight;
-
 const config = {
     type: Phaser.AUTO,
 
-    // 🔹 İlk yükleme ölçüsü
-    width: width,
-    height: height,
+    // 🎯 LANDSCAPE TASARIM BOYUTU
+    width: 1280,
+    height: 720,
 
     parent: 'game-container',
 
-    // 🔹 MULTI TOUCH (AYNI ANDA BİRDEN FAZLA TUŞ)
-    input: {
-        activePointers: 3
-    },
-
-    // 🔹 MOBİL + ROTATION DESTEKLİ SCALE
     scale: {
-        mode: Phaser.Scale.FIT,
+        mode: Phaser.Scale.FIT,          // ekranı doldurur, oran bozulmaz
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
 
@@ -32,12 +23,7 @@ const config = {
         }
     },
 
-    scene: [MenuScene, GameScene] // Menü önce, oyun sonra
+    scene: [MenuScene, GameScene]
 };
 
-const game = new Phaser.Game(config);
-
-/* 🔹 TARAYICI DÖNDÜĞÜNDE PHASER'I HABERDAR ET */
-window.addEventListener('resize', () => {
-    game.scale.resize(window.innerWidth, window.innerHeight);
-});
+new Phaser.Game(config);
