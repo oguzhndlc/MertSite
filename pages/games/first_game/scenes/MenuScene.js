@@ -19,50 +19,96 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     create() {
-        const width = this.scale.width;
-        const height = this.scale.height;
+    const width = this.scale.width;
+    const height = this.scale.height;
 
-        // Menü arkaplan animasyonu oluştur
-        this.anims.create({
-            key: 'menuBgAnim',
-            frames: this.anims.generateFrameNumbers('menuBg', { start: 0, end: 7 }), // 30 kare örnek
-            frameRate: 15, // FPS
-            repeat: -1     // sonsuz tekrar
+    // Menü arkaplan animasyonu
+    this.anims.create({
+        key: 'menuBgAnim',
+        frames: this.anims.generateFrameNumbers('menuBg', { start: 0, end: 7 }),
+        frameRate: 15,
+        repeat: -1
+    });
+
+    const bg = this.add.sprite(width / 2, height / 2, 'menuBg');
+    bg.setDisplaySize(width, height);
+    bg.play('menuBgAnim');
+
+    // 🔄 ROTATE UYARISI (iOS için şart)
+    this.rotateText = this.add.text(
+        width / 2,
+        height / 2,
+        'Lütfen telefonu yan çevirin',
+        {
+            fontSize: '28px',
+            color: '#ffffff',
+            backgroundColor: '#000000',
+            padding: { x: 20, y: 10 }
+        }
+    ).setOrigin(0.5).setDepth(100).setVisible(false);
+
+    // Orientation kontrolü
+    this.scale.on('resize', () => {
+        const isPortrait = window.innerHeight > window.innerWidth;
+
+        this.rotateText.setVisible(isPortrait);
+        this.scene.isPaused() !== isPortrait &&
+            (isPortrait ? this.scene.pause() : this.scene.resume());
+    });
+
+    // Font yükleme
+    const font = new FontFace(
+        'PixelFont',
+        'url(/pages/games/first_game/assets/fonts/pixel.ttf)'
+    );
+
+    font.load().then((loadedFont) => {
+        document.fonts.add(loadedFont);
+
+        this.add.text(width / 2, height / 1.5, 'Platformer Oyunu', {
+            fontFamily: 'PixelFont',
+            fontSize: '90px',
+            color: '#ffffff',
+            stroke: '#000000',
+            strokeThickness: 4
+        }).setOrigin(0.5);
+
+        const startButton = this.add.text(width / 2, height / 2.5, 'BAŞLAT', {
+            fontFamily: 'PixelFont',
+            fontSize: '32px',
+            backgroundColor: '#000000',
+            color: '#ffffff',
+            padding: { x: 20, y: 10 }
+        }).setOrigin(0.5).setInteractive();
+
+        // 📱 MOBİL FULLSCREEN + LANDSCAPE
+        startButton.on('pointerdown', async () => {
+
+            // 1️⃣ Fullscreen
+            if (!this.scale.isFullscreen) {
+                await this.scale.startFullscreen();
+            }
+
+            // 2️⃣ Landscape kilidi (Android)
+            if (screen.orientation && screen.orientation.lock) {
+                try {
+                    await screen.orientation.lock('landscape');
+                } catch (e) {
+                    console.warn('Orientation kilitlenemedi');
+                }
+            }
+
+            // 3️⃣ Oyuna geç
+            this.scene.start('GameScene');
         });
+    });
 
-        // Arkaplan sprite'ını sahneye ekle
-        const bg = this.add.sprite(width / 2, height / 2, 'menuBg');
-        bg.setDisplaySize(width, height); // ekrana oturur
-        bg.play('menuBgAnim');            // animasyonu başlat
+    // Fullscreen çıkınca kilidi kaldır
+    this.scale.on('leavefullscreen', () => {
+        if (screen.orientation && screen.orientation.unlock) {
+            screen.orientation.unlock();
+        }
+    });
+}
 
-        // Özel fontu yükle
-        const font = new FontFace('PixelFont', 'url(/pages/games/first_game/assets/fonts/pixel.ttf)');
-
-        font.load().then((loadedFont) => {
-            document.fonts.add(loadedFont);
-
-            // Başlık
-            this.add.text(width / 2, height / 1.5, 'Platformer Oyunu', {
-                fontFamily: 'PixelFont', // yüklediğimiz font adı
-                fontSize: '90px',
-                color: '#ffffff',         // yazı rengi
-                stroke: '#000000',        // çerçeve rengi
-                strokeThickness: 4        // çerçevenin kalınlığı
-            }).setOrigin(0.5);
-
-            // Başlat butonu
-            const startButton = this.add.text(width / 2, height / 2.5, 'BAŞLAT', {
-                fontFamily: 'PixelFont', // istersen buton fontu da değiştirebilirsin
-                fontSize: '32px',
-                backgroundColor: '#000000',
-                color: '#ffffff',
-                padding: { x: 20, y: 10 }
-            }).setOrigin(0.5).setInteractive();
-
-            startButton.on('pointerdown', () => {
-                this.scale.startFullscreen();
-                this.scene.start('GameScene'); // GameScene’e geçiş
-            });
-        });
-    }
 }
