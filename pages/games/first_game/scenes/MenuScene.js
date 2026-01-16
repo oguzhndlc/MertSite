@@ -60,6 +60,7 @@ export default class MenuScene extends Phaser.Scene {
             }).setOrigin(0.5).setInteractive();
 
             startButton.on('pointerdown', () => {
+                this.scale.startFullscreen();
                 this.scene.start('GameScene'); // GameScene’e geçiş
             });
         });
