@@ -21,6 +21,8 @@ export default class GameScene extends Phaser.Scene {
         down: false
     };
 
+    isPortrait = false;
+
     constructor() {
         super('GameScene');
     }
@@ -46,7 +48,7 @@ export default class GameScene extends Phaser.Scene {
         const width = this.scale.width;
         const height = this.scale.height;
 
-        /* ===== MULTI TOUCH (ÇOK ÖNEMLİ) ===== */
+        /* ===== MULTI TOUCH ===== */
         this.input.addPointer(3);
 
         /* ===== ORIENTATION LOCK (ANDROID) ===== */
@@ -57,6 +59,17 @@ export default class GameScene extends Phaser.Scene {
         ) {
             screen.orientation.lock('landscape').catch(() => {});
         }
+
+        /* ===== BACKGROUND ===== */
+        const bgImg = this.textures.get('bg').getSourceImage();
+        this.bg = this.add.tileSprite(0, 0, width, bgImg.height, 'bg')
+            .setOrigin(0, 0)
+            .setScale(height / bgImg.height);
+
+        /* ===== ARROW ===== */
+        this.arrow = this.add.tileSprite(0, 0, width, 128, 'arrow', 0)
+            .setOrigin(0, 0)
+            .setScale(height / 128);
 
         /* ===== ROTATE OVERLAY ===== */
         this.rotateOverlay = this.add.text(
@@ -71,51 +84,8 @@ export default class GameScene extends Phaser.Scene {
             }
         )
         .setOrigin(0.5)
-        .setDepth(999)
+        .setDepth(1000)
         .setVisible(false);
-
-        this.scale.on('resize', (gameSize) => {
-            const w = gameSize.width;
-            const h = gameSize.height;
-
-            const portrait = h > w;
-            this.rotateOverlay
-                .setVisible(portrait)
-                .setPosition(w / 2, h / 2);
-
-            this.input.enabled = !portrait;
-
-            /* Kamera */
-            this.cameras.resize(w, h);
-
-            /* Background */
-            this.bg.setSize(w, this.bg.height);
-            this.bg.setScale(h / this.bg.texture.getSourceImage().height);
-
-            /* Arrow */
-            this.arrow.setSize(w, 128);
-            this.arrow.setScale(h / 128);
-
-            /* Ground */
-            this.ground.clear(true, true);
-            this.ground.create(w / 2, h - 100, null)
-                .setSize(w, 50)
-                .setVisible(false);
-
-            /* Player güvenliği */
-            this.player.setPosition(w / 2, h / 2);
-        });
-
-        /* ===== BACKGROUND ===== */
-        const bgImg = this.textures.get('bg').getSourceImage();
-        this.bg = this.add.tileSprite(0, 0, width, bgImg.height, 'bg')
-            .setOrigin(0, 0)
-            .setScale(height / bgImg.height);
-
-        /* ===== ARROW ===== */
-        this.arrow = this.add.tileSprite(0, 0, width, 128, 'arrow', 0)
-            .setOrigin(0, 0)
-            .setScale(height / 128);
 
         /* ===== INPUT ===== */
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -178,6 +148,48 @@ export default class GameScene extends Phaser.Scene {
 
         /* ===== MOBILE CONTROLS ===== */
         this.createMobileControls();
+
+        /* ===== RESIZE / ORIENTATION ===== */
+        this.scale.on('resize', (gameSize) => {
+            const w = gameSize.width;
+            const h = gameSize.height;
+
+            this.isPortrait = h > w;
+
+            this.rotateOverlay
+                .setVisible(this.isPortrait)
+                .setPosition(w / 2, h / 2);
+
+            if (this.isPortrait) {
+                // OYUNU TAMAMEN DURDUR
+                this.scene.pause();
+                this.cameras.main.setVisible(false);
+                this.input.enabled = false;
+                this.sound.pauseAll();
+                return;
+            }
+
+            // LANDSCAPE → DEVAM
+            this.scene.resume();
+            this.cameras.main.setVisible(true);
+            this.input.enabled = true;
+            this.sound.resumeAll();
+
+            this.cameras.resize(w, h);
+
+            this.bg.setSize(w, this.bg.height);
+            this.bg.setScale(h / bgImg.height);
+
+            this.arrow.setSize(w, 128);
+            this.arrow.setScale(h / 128);
+
+            this.ground.clear(true, true);
+            this.ground.create(w / 2, h - 100, null)
+                .setSize(w, 50)
+                .setVisible(false);
+
+            this.player.setPosition(w / 2, h / 2);
+        });
     }
 
     createMobileControls() {
@@ -220,6 +232,8 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update(time, delta) {
+        if (this.isPortrait) return;
+
         const p = this.player;
         const c = this.cursors;
 
