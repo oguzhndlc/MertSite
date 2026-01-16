@@ -12,7 +12,15 @@ export default class GameScene extends Phaser.Scene {
 
     arrowFrame = 0;
     arrowFrameTimer = 0;
-    arrowFrameDelay = 125; // 8 FPS
+    arrowFrameDelay = 125;
+
+    // MOBİL INPUT STATE
+    mobileInput = {
+        left: false,
+        right: false,
+        jump: false,
+        down: false
+    };
 
     constructor() {
         super('GameScene');
@@ -40,27 +48,15 @@ export default class GameScene extends Phaser.Scene {
         const height = this.scale.height;
 
         /* ================= BACKGROUND ================= */
-        this.bg = this.add.tileSprite(
-            0,
-            0,
-            width,
-            this.textures.get('bg').getSourceImage().height,
-            'bg'
-        );
-        this.bg.setOrigin(0, 0);
-        this.bg.setScale(height / this.textures.get('bg').getSourceImage().height);
+        const bgImg = this.textures.get('bg').getSourceImage();
+        this.bg = this.add.tileSprite(0, 0, width, bgImg.height, 'bg')
+            .setOrigin(0, 0)
+            .setScale(height / bgImg.height);
 
         /* ================= ARROW TILE ================= */
-        this.arrow = this.add.tileSprite(
-            0,
-            0,
-            width,
-            128,
-            'arrow',
-            0
-        );
-        this.arrow.setOrigin(0, 0);
-        this.arrow.setScale(height / 128);
+        this.arrow = this.add.tileSprite(0, 0, width, 128, 'arrow', 0)
+            .setOrigin(0, 0)
+            .setScale(height / 128);
 
         /* ================= INPUT ================= */
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -120,18 +116,69 @@ export default class GameScene extends Phaser.Scene {
             volume: 0.5
         });
         this.bgMusic.play();
+
+        /* ================= MOBILE CONTROLS ================= */
+        this.createMobileControls();
+    }
+
+    createMobileControls() {
+        if (!this.sys.game.device.input.touch) return;
+
+        const w = this.scale.width;
+        const h = this.scale.height;
+
+        const makeBtn = (x, y, label) => {
+            return this.add.text(x, y, label, {
+                fontSize: '32px',
+                backgroundColor: '#000000aa',
+                color: '#ffffff',
+                padding: { x: 20, y: 10 }
+            })
+            .setScrollFactor(0)
+            .setDepth(100)
+            .setInteractive();
+        };
+
+        // SOL
+        const leftBtn = makeBtn(40, h - 120, '◀');
+        leftBtn.on('pointerdown', () => this.mobileInput.left = true);
+        leftBtn.on('pointerup', () => this.mobileInput.left = false);
+        leftBtn.on('pointerout', () => this.mobileInput.left = false);
+
+        // SAĞ
+        const rightBtn = makeBtn(140, h - 120, '▶');
+        rightBtn.on('pointerdown', () => this.mobileInput.right = true);
+        rightBtn.on('pointerup', () => this.mobileInput.right = false);
+        rightBtn.on('pointerout', () => this.mobileInput.right = false);
+
+        // ZIPLA
+        const jumpBtn = makeBtn(w - 140, h - 120, '⬆');
+        jumpBtn.on('pointerdown', () => this.mobileInput.jump = true);
+        jumpBtn.on('pointerup', () => this.mobileInput.jump = false);
+        jumpBtn.on('pointerout', () => this.mobileInput.jump = false);
+
+        // FAST FALL
+        const downBtn = makeBtn(w - 140, h - 60, '⬇');
+        downBtn.on('pointerdown', () => this.mobileInput.down = true);
+        downBtn.on('pointerup', () => this.mobileInput.down = false);
+        downBtn.on('pointerout', () => this.mobileInput.down = false);
     }
 
     update(time, delta) {
         const player = this.player;
         const cursors = this.cursors;
 
+        const left = cursors.left.isDown || this.mobileInput.left;
+        const right = cursors.right.isDown || this.mobileInput.right;
+        const up = cursors.up.isDown || this.mobileInput.jump;
+        const down = cursors.down.isDown || this.mobileInput.down;
+
         /* ================= PLAYER MOVE ================= */
-        if (cursors.left.isDown) {
+        if (left) {
             player.setVelocityX(-200);
             player.flipX = true;
             if (player.body.blocked.down) player.anims.play('run', true);
-        } else if (cursors.right.isDown) {
+        } else if (right) {
             player.setVelocityX(200);
             player.flipX = false;
             if (player.body.blocked.down) player.anims.play('run', true);
@@ -141,28 +188,28 @@ export default class GameScene extends Phaser.Scene {
         }
 
         /* ================= JUMP ================= */
-        if (cursors.up.isDown && player.body.blocked.down) {
+        if (up && player.body.blocked.down) {
             player.setVelocityY(-300);
             this.jumpTimer = this.jumpHoldTime;
             player.anims.play('jump', true);
         }
 
-        if (cursors.up.isDown && this.jumpTimer > 0) {
+        if (up && this.jumpTimer > 0) {
             player.setVelocityY(-300);
             this.jumpTimer -= delta;
         }
 
-        if (cursors.up.isUp || this.jumpTimer <= 0) {
+        if (!up || this.jumpTimer <= 0) {
             this.jumpTimer = 0;
         }
 
         /* ================= FAST FALL ================= */
-        if (cursors.down.isDown && !player.body.blocked.down) {
+        if (down && !player.body.blocked.down) {
             player.setVelocityY(1000);
             player.anims.play('fastfall', true);
         }
 
-        if (!player.body.blocked.down && !cursors.down.isDown) {
+        if (!player.body.blocked.down && !down) {
             player.anims.play('jump', true);
         }
 
@@ -172,7 +219,7 @@ export default class GameScene extends Phaser.Scene {
         /* ================= ARROW SCROLL ================= */
         this.arrow.tilePositionX -= 200 * delta / 1000;
 
-        /* ================= ARROW FRAME ANIMATION ================= */
+        /* ================= ARROW FRAME ================= */
         this.arrowFrameTimer += delta;
         if (this.arrowFrameTimer >= this.arrowFrameDelay) {
             this.arrowFrame = (this.arrowFrame + 1) % 6;
