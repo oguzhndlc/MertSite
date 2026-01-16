@@ -14,7 +14,6 @@ export default class GameScene extends Phaser.Scene {
     arrowFrameTimer = 0;
     arrowFrameDelay = 125;
 
-    // MOBİL INPUT STATE
     mobileInput = {
         left: false,
         right: false,
@@ -47,18 +46,49 @@ export default class GameScene extends Phaser.Scene {
         const width = this.scale.width;
         const height = this.scale.height;
 
-        /* ================= BACKGROUND ================= */
+        /* ===== ORIENTATION LOCK (ANDROID) ===== */
+        if (
+            this.scale.isFullscreen &&
+            screen.orientation?.lock &&
+            !this.sys.game.device.os.iOS
+        ) {
+            screen.orientation.lock('landscape').catch(() => {});
+        }
+
+        /* ===== ROTATE OVERLAY (iOS + fallback) ===== */
+        this.rotateOverlay = this.add.text(
+            width / 2,
+            height / 2,
+            'Lütfen telefonu yan çevirin',
+            {
+                fontSize: '28px',
+                backgroundColor: '#000',
+                color: '#fff',
+                padding: { x: 20, y: 10 }
+            }
+        )
+        .setOrigin(0.5)
+        .setDepth(999)
+        .setVisible(false);
+
+        this.scale.on('resize', () => {
+            const isPortrait = window.innerHeight > window.innerWidth;
+            this.rotateOverlay.setVisible(isPortrait);
+            this.input.enabled = !isPortrait;
+        });
+
+        /* ===== BACKGROUND ===== */
         const bgImg = this.textures.get('bg').getSourceImage();
         this.bg = this.add.tileSprite(0, 0, width, bgImg.height, 'bg')
             .setOrigin(0, 0)
             .setScale(height / bgImg.height);
 
-        /* ================= ARROW TILE ================= */
+        /* ===== ARROW ===== */
         this.arrow = this.add.tileSprite(0, 0, width, 128, 'arrow', 0)
             .setOrigin(0, 0)
             .setScale(height / 128);
 
-        /* ================= INPUT ================= */
+        /* ===== INPUT ===== */
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.escKey = this.input.keyboard.addKey(
@@ -69,13 +99,13 @@ export default class GameScene extends Phaser.Scene {
             this.scene.start('MenuScene');
         });
 
-        /* ================= GROUND ================= */
+        /* ===== GROUND ===== */
         this.ground = this.physics.add.staticGroup();
         this.ground.create(width / 2, height - 100, null)
             .setSize(width, 50)
             .setVisible(false);
 
-        /* ================= PLAYER ================= */
+        /* ===== PLAYER ===== */
         this.player = this.physics.add.sprite(width / 2, height / 2, 'player');
         this.player.setCollideWorldBounds(true);
         this.player.body.setGravityY(500);
@@ -83,7 +113,7 @@ export default class GameScene extends Phaser.Scene {
 
         this.physics.add.collider(this.player, this.ground);
 
-        /* ================= PLAYER ANIMS ================= */
+        /* ===== ANIMS ===== */
         this.anims.create({
             key: 'idle',
             frames: this.anims.generateFrameNumbers('player', { start: 0, end: 12 }),
@@ -110,14 +140,14 @@ export default class GameScene extends Phaser.Scene {
             frameRate: 10
         });
 
-        /* ================= MUSIC ================= */
+        /* ===== MUSIC ===== */
         this.bgMusic = this.sound.add('bgMusic', {
             loop: true,
             volume: 0.5
         });
         this.bgMusic.play();
 
-        /* ================= MOBILE CONTROLS ================= */
+        /* ===== MOBILE CONTROLS ===== */
         this.createMobileControls();
     }
 
@@ -127,99 +157,86 @@ export default class GameScene extends Phaser.Scene {
         const w = this.scale.width;
         const h = this.scale.height;
 
-        const makeBtn = (x, y, label) => {
-            return this.add.text(x, y, label, {
+        const makeBtn = (x, y, txt) =>
+            this.add.text(x, y, txt, {
                 fontSize: '32px',
                 backgroundColor: '#000000aa',
                 color: '#ffffff',
                 padding: { x: 20, y: 10 }
             })
-            .setScrollFactor(0)
             .setDepth(100)
+            .setScrollFactor(0)
             .setInteractive();
-        };
 
-        // SOL
-        const leftBtn = makeBtn(40, h - 120, '◀');
-        leftBtn.on('pointerdown', () => this.mobileInput.left = true);
-        leftBtn.on('pointerup', () => this.mobileInput.left = false);
-        leftBtn.on('pointerout', () => this.mobileInput.left = false);
+        const left = makeBtn(40, h - 120, '◀');
+        const right = makeBtn(140, h - 120, '▶');
+        const jump = makeBtn(w - 140, h - 120, '⬆');
+        const down = makeBtn(w - 140, h - 60, '⬇');
 
-        // SAĞ
-        const rightBtn = makeBtn(140, h - 120, '▶');
-        rightBtn.on('pointerdown', () => this.mobileInput.right = true);
-        rightBtn.on('pointerup', () => this.mobileInput.right = false);
-        rightBtn.on('pointerout', () => this.mobileInput.right = false);
+        left.on('pointerdown', () => this.mobileInput.left = true);
+        left.on('pointerup', () => this.mobileInput.left = false);
+        left.on('pointerout', () => this.mobileInput.left = false);
 
-        // ZIPLA
-        const jumpBtn = makeBtn(w - 140, h - 120, '⬆');
-        jumpBtn.on('pointerdown', () => this.mobileInput.jump = true);
-        jumpBtn.on('pointerup', () => this.mobileInput.jump = false);
-        jumpBtn.on('pointerout', () => this.mobileInput.jump = false);
+        right.on('pointerdown', () => this.mobileInput.right = true);
+        right.on('pointerup', () => this.mobileInput.right = false);
+        right.on('pointerout', () => this.mobileInput.right = false);
 
-        // FAST FALL
-        const downBtn = makeBtn(w - 140, h - 60, '⬇');
-        downBtn.on('pointerdown', () => this.mobileInput.down = true);
-        downBtn.on('pointerup', () => this.mobileInput.down = false);
-        downBtn.on('pointerout', () => this.mobileInput.down = false);
+        jump.on('pointerdown', () => this.mobileInput.jump = true);
+        jump.on('pointerup', () => this.mobileInput.jump = false);
+        jump.on('pointerout', () => this.mobileInput.jump = false);
+
+        down.on('pointerdown', () => this.mobileInput.down = true);
+        down.on('pointerup', () => this.mobileInput.down = false);
+        down.on('pointerout', () => this.mobileInput.down = false);
     }
 
     update(time, delta) {
-        const player = this.player;
-        const cursors = this.cursors;
+        const p = this.player;
+        const c = this.cursors;
 
-        const left = cursors.left.isDown || this.mobileInput.left;
-        const right = cursors.right.isDown || this.mobileInput.right;
-        const up = cursors.up.isDown || this.mobileInput.jump;
-        const down = cursors.down.isDown || this.mobileInput.down;
+        const left = c.left.isDown || this.mobileInput.left;
+        const right = c.right.isDown || this.mobileInput.right;
+        const up = c.up.isDown || this.mobileInput.jump;
+        const down = c.down.isDown || this.mobileInput.down;
 
-        /* ================= PLAYER MOVE ================= */
         if (left) {
-            player.setVelocityX(-200);
-            player.flipX = true;
-            if (player.body.blocked.down) player.anims.play('run', true);
+            p.setVelocityX(-200);
+            p.flipX = true;
+            if (p.body.blocked.down) p.anims.play('run', true);
         } else if (right) {
-            player.setVelocityX(200);
-            player.flipX = false;
-            if (player.body.blocked.down) player.anims.play('run', true);
+            p.setVelocityX(200);
+            p.flipX = false;
+            if (p.body.blocked.down) p.anims.play('run', true);
         } else {
-            player.setVelocityX(0);
-            if (player.body.blocked.down) player.anims.play('idle', true);
+            p.setVelocityX(0);
+            if (p.body.blocked.down) p.anims.play('idle', true);
         }
 
-        /* ================= JUMP ================= */
-        if (up && player.body.blocked.down) {
-            player.setVelocityY(-300);
+        if (up && p.body.blocked.down) {
+            p.setVelocityY(-300);
             this.jumpTimer = this.jumpHoldTime;
-            player.anims.play('jump', true);
+            p.anims.play('jump', true);
         }
 
         if (up && this.jumpTimer > 0) {
-            player.setVelocityY(-300);
+            p.setVelocityY(-300);
             this.jumpTimer -= delta;
-        }
-
-        if (!up || this.jumpTimer <= 0) {
+        } else {
             this.jumpTimer = 0;
         }
 
-        /* ================= FAST FALL ================= */
-        if (down && !player.body.blocked.down) {
-            player.setVelocityY(1000);
-            player.anims.play('fastfall', true);
+        if (down && !p.body.blocked.down) {
+            p.setVelocityY(1000);
+            p.anims.play('fastfall', true);
         }
 
-        if (!player.body.blocked.down && !down) {
-            player.anims.play('jump', true);
+        if (!p.body.blocked.down && !down) {
+            p.anims.play('jump', true);
         }
 
-        /* ================= BACKGROUND SCROLL ================= */
-        this.bg.tilePositionX += player.body.velocity.x * delta / 1000;
-
-        /* ================= ARROW SCROLL ================= */
+        this.bg.tilePositionX += p.body.velocity.x * delta / 1000;
         this.arrow.tilePositionX -= 200 * delta / 1000;
 
-        /* ================= ARROW FRAME ================= */
         this.arrowFrameTimer += delta;
         if (this.arrowFrameTimer >= this.arrowFrameDelay) {
             this.arrowFrame = (this.arrowFrame + 1) % 6;
