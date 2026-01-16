@@ -1,18 +1,12 @@
-import MenuScene from './scenes/MenuScene.js';
-import GameScene from './scenes/GameScene.js';
-
 const config = {
     type: Phaser.AUTO,
-
-    // 🎯 LANDSCAPE TASARIM BOYUTU
-    width: 1280,
-    height: 720,
-
     parent: 'game-container',
 
     scale: {
-        mode: Phaser.Scale.FIT,          // ekranı doldurur, oran bozulmaz
-        autoCenter: Phaser.Scale.CENTER_BOTH
+        mode: Phaser.Scale.RESIZE,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: window.innerWidth,
+        height: window.innerHeight
     },
 
     physics: {
@@ -26,4 +20,4 @@ const config = {
     scene: [MenuScene, GameScene]
 };
 
-new Phaser.Game(config);
+const game = new Phaser.Game(config);
