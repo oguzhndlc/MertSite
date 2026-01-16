@@ -46,6 +46,9 @@ export default class GameScene extends Phaser.Scene {
         const width = this.scale.width;
         const height = this.scale.height;
 
+        /* ===== MULTI TOUCH (ÇOK ÖNEMLİ) ===== */
+        this.input.addPointer(3);
+
         /* ===== ORIENTATION LOCK (ANDROID) ===== */
         if (
             this.scale.isFullscreen &&
@@ -55,7 +58,7 @@ export default class GameScene extends Phaser.Scene {
             screen.orientation.lock('landscape').catch(() => {});
         }
 
-        /* ===== ROTATE OVERLAY (iOS + fallback) ===== */
+        /* ===== ROTATE OVERLAY ===== */
         this.rotateOverlay = this.add.text(
             width / 2,
             height / 2,
@@ -71,10 +74,36 @@ export default class GameScene extends Phaser.Scene {
         .setDepth(999)
         .setVisible(false);
 
-        this.scale.on('resize', () => {
-            const isPortrait = window.innerHeight > window.innerWidth;
-            this.rotateOverlay.setVisible(isPortrait);
-            this.input.enabled = !isPortrait;
+        this.scale.on('resize', (gameSize) => {
+            const w = gameSize.width;
+            const h = gameSize.height;
+
+            const portrait = h > w;
+            this.rotateOverlay
+                .setVisible(portrait)
+                .setPosition(w / 2, h / 2);
+
+            this.input.enabled = !portrait;
+
+            /* Kamera */
+            this.cameras.resize(w, h);
+
+            /* Background */
+            this.bg.setSize(w, this.bg.height);
+            this.bg.setScale(h / this.bg.texture.getSourceImage().height);
+
+            /* Arrow */
+            this.arrow.setSize(w, 128);
+            this.arrow.setScale(h / 128);
+
+            /* Ground */
+            this.ground.clear(true, true);
+            this.ground.create(w / 2, h - 100, null)
+                .setSize(w, 50)
+                .setVisible(false);
+
+            /* Player güvenliği */
+            this.player.setPosition(w / 2, h / 2);
         });
 
         /* ===== BACKGROUND ===== */

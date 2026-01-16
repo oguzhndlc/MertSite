@@ -14,8 +14,16 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     create() {
-        const width = this.scale.width;
-        const height = this.scale.height;
+        const resizeAll = () => {
+            const width = this.scale.width;
+            const height = this.scale.height;
+
+            bg.setPosition(width / 2, height / 2);
+            bg.setDisplaySize(width, height);
+
+            title.setPosition(width / 2, height / 1.5);
+            startButton.setPosition(width / 2, height / 2.5);
+        };
 
         /* ===== BACKGROUND ===== */
         this.anims.create({
@@ -25,8 +33,13 @@ export default class MenuScene extends Phaser.Scene {
             repeat: -1
         });
 
-        const bg = this.add.sprite(width / 2, height / 2, 'menuBg');
-        bg.setDisplaySize(width, height);
+        const bg = this.add.sprite(
+            this.scale.width / 2,
+            this.scale.height / 2,
+            'menuBg'
+        );
+
+        bg.setDisplaySize(this.scale.width, this.scale.height);
         bg.play('menuBgAnim');
 
         /* ===== FONT ===== */
@@ -35,20 +48,28 @@ export default class MenuScene extends Phaser.Scene {
             'url(/pages/games/first_game/assets/fonts/pixel.ttf)'
         );
 
+        let title;
+        let startButton;
+
         font.load().then((loadedFont) => {
             document.fonts.add(loadedFont);
 
-            this.add.text(width / 2, height / 1.5, 'Platformer Oyunu', {
-                fontFamily: 'PixelFont',
-                fontSize: '90px',
-                color: '#ffffff',
-                stroke: '#000000',
-                strokeThickness: 4
-            }).setOrigin(0.5);
+            title = this.add.text(
+                this.scale.width / 2,
+                this.scale.height / 1.5,
+                'Platformer Oyunu',
+                {
+                    fontFamily: 'PixelFont',
+                    fontSize: '90px',
+                    color: '#ffffff',
+                    stroke: '#000000',
+                    strokeThickness: 4
+                }
+            ).setOrigin(0.5);
 
-            const startButton = this.add.text(
-                width / 2,
-                height / 2.5,
+            startButton = this.add.text(
+                this.scale.width / 2,
+                this.scale.height / 2.5,
                 'BAŞLAT',
                 {
                     fontFamily: 'PixelFont',
@@ -59,16 +80,30 @@ export default class MenuScene extends Phaser.Scene {
                 }
             )
             .setOrigin(0.5)
-            .setInteractive();
+            .setInteractive({ useHandCursor: true });
 
-            /* ===== FULLSCREEN ===== */
-            startButton.on('pointerdown', async () => {
+            /* ===== FULLSCREEN + LANDSCAPE ===== */
+            startButton.on('pointerup', async () => {
+
+                // FULLSCREEN
                 if (!this.scale.isFullscreen) {
                     await this.scale.startFullscreen();
+                }
+
+                // LANDSCAPE LOCK (Android / PWA)
+                if (screen.orientation && screen.orientation.lock) {
+                    try {
+                        await screen.orientation.lock('landscape');
+                    } catch (e) {
+                        console.warn('Orientation kilitlenemedi');
+                    }
                 }
 
                 this.scene.start('GameScene');
             });
         });
+
+        /* ===== RESIZE / ROTATION LISTENER ===== */
+        this.scale.on('resize', resizeAll);
     }
 }
